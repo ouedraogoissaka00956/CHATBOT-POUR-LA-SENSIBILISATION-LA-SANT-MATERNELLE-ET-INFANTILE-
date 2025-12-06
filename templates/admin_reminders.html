@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rappels</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='rappel.css') }}">
+</head>
+<body>
+
+{% include 'admin_menu.html' %}
+
+<h2 class="title">Rappels</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Heure</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reminders %}
+        <tr>
+            <td>{{ r.username }}</td>
+            <td>{{ r.type }}</td>
+            <td>{{ r.message }}</td>
+            <td>{{ r.date }}</td>
+            <td>{{ r.time }}</td>
+            <td>
+                <a class="btn-delete" href="/admin/delete_reminder/{{ r._id }}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

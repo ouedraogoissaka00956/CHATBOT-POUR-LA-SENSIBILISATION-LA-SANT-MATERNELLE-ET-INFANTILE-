@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='consult.css') }}">
+</head>
+<body>
+
+{% include 'admin_menu.html' %}
+
+<h2 class="title">Consultations</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patiente</th>
+            <th>Conseiller</th>
+            <th>Date</th>
+            <th>Motif</th>
+            <th>Message</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in consultations %}
+        <tr>
+            <td>{{ c.patient }}</td>
+            <td>{{ c.conseiller }}</td>
+            <td>{{ c.date }}</td>
+            <td>{{ c.motif }}</td>
+            <td>{{ c.message }}</td>
+            <td>{{ c.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

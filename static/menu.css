@@ -1,0 +1,106 @@
+/* ==============================
+   STYLE MENU ADMIN
+   ============================== */
+
+/* Couleurs */
+:root {
+    --vert-principal: #86a391;
+    --vert-clair: #a9bfae;
+    --blanc: #fff;
+    --gris: #333;
+}
+
+/* Reset */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+/* ===== NAVBAR ADMIN ===== */
+.admin-navbar {
+    width: 200px;
+    background: var(--vert-principal);
+    color: var(--blanc);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 25px 20px;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-navbar h2 {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* Liste du menu */
+.admin-navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-navbar ul li {
+    margin-bottom: 12px;
+}
+
+/* Liens du menu */
+.admin-navbar ul li a {
+    display: block;
+    text-decoration: none;
+    color: var(--blanc);
+    font-size: 16px;
+    padding: 12px 10px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+/* Hover */
+.admin-navbar ul li a:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+/* Active (optionnel si tu veux l’utiliser) */
+.admin-navbar ul li a.active {
+    background: var(--vert-clair);
+    color: var(--gris);
+    font-weight: 600;
+}
+
+/* ===== CONTENU PAGE À DROITE ===== */
+.admin-content {
+    margin-left: 270px; /* espace pour la sidebar */
+    padding: 30px;
+}
+
+/* Responsive mobile : la sidebar devient horizontale */
+@media (max-width: 780px) {
+
+    .admin-navbar {
+        width: 100%;
+        position: relative;
+        height: auto;
+        flex-direction: column;
+        box-shadow: none;
+    }
+
+    .admin-navbar ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .admin-navbar ul li {
+        margin-bottom: 0;
+    }
+
+    .admin-content {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}

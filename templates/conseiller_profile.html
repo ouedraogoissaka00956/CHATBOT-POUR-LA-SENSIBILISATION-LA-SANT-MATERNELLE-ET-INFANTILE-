@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='image.png') }}" class="logo">
+        <h2>Profil Conseiller</h2>
+    </div>
+
+    <div class="nav-right">
+        <a href="{{ url_for('conseiller_dashboard') }}">Retour</a>
+    </div>
+</nav>
+
+<div class="profile-container">
+
+    {% if user.photo %}
+    <img src="{{ url_for('static', filename='uploads/' ~ user.photo) }}" class="profile-photo">
+    {% else %}
+        <img src="{{ url_for('static', filename='uploads/defaut.png') }}" class="profile-photo">
+    {% endif %}
+
+
+    <p><strong>Nom :</strong> {{ user.nom }}</p>
+    <p><strong>Prénom :</strong> {{ user.prenom }}</p>
+    <p><strong>Email :</strong> {{ user.email }}</p>
+
+    <a href="{{ url_for('conseiller_profile_edit') }}" class="edit-btn">Modifier son profil</a>
+
+</div>
+
+</body>
+</html>

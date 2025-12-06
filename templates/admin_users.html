@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des utilisateurs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+
+{% include 'admin_menu.html' %}
+
+<h2 class="title">Gestion des utilisateurs</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.nom }}</td>
+            <td>{{ u.prenom }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.email if u.email else "—" }}</td>
+            <td>{{ u.role }}</td>
+            <td>
+                <a class="btn-edit" href="/admin/edit_user/{{ u._id }}">Modifier</a>
+                <a class="btn-delete" href="/admin/delete_user/{{ u._id }}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

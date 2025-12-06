@@ -1,0 +1,164 @@
+:root {
+  --vert-principal: #86a391;
+  --vert-clair: #a9bfae;
+  --beige-fond: #f7f5f2;
+  --gris-text: #444;
+  --blanc: #ffffff;
+  --rouge: #c0392b;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--beige-fond);
+  color: var(--gris-text);
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--vert-principal);
+  color: var(--blanc);
+  padding: 15px 30px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.nav-left h2 {
+  margin: 0;
+}
+.nav-right a {
+  color: var(--blanc);
+  margin-left: 15px;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+.nav-right a:hover {
+  background: var(--vert-clair);
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: var(--blanc);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+  color: var(--vert-principal);
+  text-align: center;
+}
+
+/* ===== FORMULAIRE ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+form button {
+  background: var(--vert-principal);
+  color: var(--blanc);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+form button:hover {
+  background: var(--vert-clair);
+}
+
+.message {
+  text-align: center;
+  color: var(--vert-principal);
+  margin-top: 15px;
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+table th, table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+table th {
+  background: var(--vert-principal);
+  color: var(--blanc);
+}
+.delete-btn {
+  color: var(--rouge);
+  text-decoration: none;
+  font-weight: bold;
+}
+.delete-btn:hover {
+  text-decoration: underline;
+}
+
+.edit-btn {
+  color: var(--vert-principal);
+  text-decoration: none;
+  margin-right: 10px;
+  font-weight: bold;
+}
+.edit-btn:hover {
+  text-decoration: underline;
+}
+
+/* Style du select pour le rôle */
+select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+  font-size: 1em;
+}
+
+/* Style pour les zones de texte */
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #eee;
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: var(--vert-principal);
+    color: white;
+}
+.delete-btn {
+    color: red;
+    text-decoration: none;
+    margin-left: 10px;
+}
+.delete-btn:hover {
+    text-decoration: underline;
+}
