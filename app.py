@@ -95,7 +95,7 @@ def allowed_file(filename):
 # -------------------------
 #  Connexion MongoDB
 # -------------------------
-mongo_client = MongoClient("mongodb://localhost:27017/")
+mongo_client = MongoClient(os.getenv("MONGO_URI"))
 db = mongo_client["chatbot_sante"]
 users_collection = db["users"]
 conversations_collection = db["conversations"]
