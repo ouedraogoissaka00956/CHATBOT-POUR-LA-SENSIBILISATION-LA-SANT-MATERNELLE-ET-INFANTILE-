@@ -8,19 +8,19 @@
 <body>
 <nav class="navbar">
     <div class="nav-left">
-        <h2>🩺 Consultations</h2>
+        <h2> Consultations</h2>
     </div>
     <div class="nav-right">
         {% if role == 'admin' %}
-        <a href="{{ url_for('admin_dashboard') }}">🏠 Tableau de bord</a>
+        <a href="{{ url_for('admin_dashboard') }}"> Tableau de bord</a>
         {% endif %}
-        <a href="{{ url_for('add_consultation') }}">➕ Ajouter</a>
-        <a href="{{ url_for('logout') }}">🚪 Déconnexion</a>
+        <a href="{{ url_for('add_consultation') }}"> Ajouter</a>
+        <a href="{{ url_for('logout') }}"> Déconnexion</a>
     </div>
 </nav>
 
 <div class="container">
-    <h2>📋 Liste des consultations</h2>
+    <h2> Liste des consultations</h2>
 
     {% if consultations %}
     <table>

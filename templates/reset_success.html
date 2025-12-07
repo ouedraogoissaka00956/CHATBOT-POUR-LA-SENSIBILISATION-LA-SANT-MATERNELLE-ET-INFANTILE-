@@ -5,7 +5,7 @@
     <title>Mot de passe réinitialisé</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 
-    <!-- 🔁 Redirection automatique après 3 secondes -->
+    <!--  Redirection automatique après 3 secondes -->
     <script>
         setTimeout(function() {
             window.location.href = "{{ url_for('login') }}";

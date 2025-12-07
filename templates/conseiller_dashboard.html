@@ -26,17 +26,17 @@
     <div class="stats-grid">
 
         <a href="{{ url_for('conseiller_patients') }}" class="stat-card">
-            <h3>👩‍🍼 Patientes</h3>
+            <h3> Patientes</h3>
             <p>{{ total_patients }}</p>
         </a>
 
        <a href="{{ url_for('conseiller_consultations') }}" class="stat-card">
-            <h3>📅 Consultations</h3>
+            <h3> Consultations</h3>
             <p>{{ total_consultations }}</p>    
        </a>
 
         <a href="{{ url_for('conseiller_profile') }}" class="stat-card">
-            <h3>👤 Mon profil</h3>
+            <h3> Mon profil</h3>
             <p>Voir / Modifier</p>
         </a>
 
@@ -52,7 +52,7 @@
     {% endfor %}
 
     {% if alerts|length == 0 %}
-        <p class="no-alert">Aucune alerte pour le moment 🎉</p>
+        <p class="no-alert">Aucune alerte pour le moment </p>
     {% endif %}
 </div>
 

@@ -22,12 +22,12 @@
         <p class="role">Conseiller</p>
     </div>
 
-    <a href="{{ url_for('conseiller_dashboard') }}">🏠 Tableau de bord</a>
-    <a href="{{ url_for('conseiller_consultations') }}">📋 Liste des consultations</a>
-    <a href="{{ url_for('conseiller_discussions') }}">💬 Discussions</a>
-    <a href="{{ url_for('conseiller_patients') }}">👩‍🍼 Patientes</a>
-    <a href="{{ url_for('conseiller_profile') }}">👤 Mon Profil</a>
-    <a href="{{ url_for('logout') }}">🔌 Déconnexion</a>
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_consultations') }}"> Liste des consultations</a>
+    <a href="{{ url_for('conseiller_discussions') }}"> Discussions</a>
+    <a href="{{ url_for('conseiller_patients') }}"> Patientes</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
 </div>
 
 
@@ -36,7 +36,7 @@
 
     <h1>Liste des consultations</h1>
 
-    <h2 class="section-title">🕘 En attente</h2>
+    <h2 class="section-title"> En attente</h2>
     {% for c in consultations_attente %}
         <div class="consult-card">
             <h3>{{ c.patient }}</h3>
@@ -53,7 +53,7 @@
         </div>
     {% endfor %}
 
-    <h2 class="section-title">✔ Approuvées</h2>
+    <h2 class="section-title"> Approuvées</h2>
     {% for c in consultations_ok %}
         <div class="consult-card">
             <h3>{{ c.patient }}</h3>
@@ -62,7 +62,7 @@
         </div>
     {% endfor %}
 
-    <h2 class="section-title">❌ Rejetées</h2>
+    <h2 class="section-title"> Rejetées</h2>
     {% for c in consultations_rejet %}
         <div class="consult-card rejection">
             <h3>{{ c.patient }}</h3>

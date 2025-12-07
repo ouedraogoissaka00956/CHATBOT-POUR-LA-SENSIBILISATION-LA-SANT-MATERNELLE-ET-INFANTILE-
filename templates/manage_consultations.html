@@ -12,11 +12,11 @@
     <h2>Conseiller</h2>
     
 
-    <a href="{{ url_for('conseiller_dashboard') }}">🏠 Tableau de bord</a>
-    <a href="{{ url_for('conseiller_patients') }}">👩‍🍼 Patientes</a>
-    <a href="{{ url_for('manage_consultations') }}" class="active">📅 Consultations</a>
-    <a href="{{ url_for('conseiller_profile') }}">👤 Mon Profil</a>
-    <a href="{{ url_for('logout') }}">🔌 Déconnexion</a>
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_patients') }}"> Patientes</a>
+    <a href="{{ url_for('manage_consultations') }}" class="active"> Consultations</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
 </div>
 
 <!-- ===== CONTENU ===== -->
@@ -24,7 +24,7 @@
 
     <h1>Liste des consultations</h1>
 
-    <h2 class="section-title">🕘 En attente</h2>
+    <h2 class="section-title"> En attente</h2>
     {% for c in consultations_attente %}
         <div class="consult-card">
             <h3>{{ c.patient }}</h3>

@@ -8,17 +8,17 @@
 <body>
   <nav class="navbar">
     <div class="nav-left">
-      <h2>👨‍💼 Administration</h2>
+      <h2> Administration</h2>
     </div>
     <div class="nav-right">
-      <a href="{{ url_for('admin') }}">🏠 Tableau de bord</a>
-      <a href="{{ url_for('list_conseillers') }}">🧑‍⚕️ Liste des conseillers</a>
-      <a href="{{ url_for('logout') }}">🚪 Déconnexion</a>
+      <a href="{{ url_for('admin') }}"> Tableau de bord</a>
+      <a href="{{ url_for('list_conseillers') }}"> Liste des conseillers</a>
+      <a href="{{ url_for('logout') }}"> Déconnexion</a>
     </div>
   </nav>
 
   <div class="container">
-    <h2>➕ Ajouter un conseiller</h2>
+    <h2> Ajouter un conseiller</h2>
     <form method="POST">
       <input type="text" name="nom" placeholder="Nom" required>
       <input type="text" name="prenom" placeholder="Prénom" required>

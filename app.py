@@ -11,7 +11,23 @@ import pickle
 import pandas as pd
 from bson import ObjectId
 from functools import wraps
-from datetime import date
+from datetime import datetime, date
+from datetime import datetime, timedelta
+from threading import Thread
+import time
+
+
+#
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
+from reportlab.lib import colors
+from flask import send_file
+
+#
+from apscheduler.schedulers.background import BackgroundScheduler
+
 
 # Deep Learning
 from tensorflow import keras
@@ -44,7 +60,7 @@ app.secret_key = '9bcddfd4d2cb02dd798a9a990f97595cd3e3872c2865e7cf'
 
 
 # ===========================================
-# 📧 CONFIG EMAIL (SMTP)
+#  CONFIG EMAIL (SMTP)
 # ===========================================
 from flask_mail import Mail, Message
 
@@ -57,7 +73,7 @@ app.config['MAIL_DEFAULT_SENDER'] = 'oissaka439@gmail.com'
 
 mail = Mail(app)
 # ===========================================
-import re
+
 
 def is_valid_email(email):
     regex = r"^[\w\.-]+@[\w\.-]+\.\w+$"
@@ -66,7 +82,7 @@ def is_valid_email(email):
 
 
 #===========================================
-# 📁 Configuration Uploads
+#  Configuration Uploads
 #===========================================
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
@@ -77,7 +93,7 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # -------------------------
-# 🗄️ Connexion MongoDB
+#  Connexion MongoDB
 # -------------------------
 mongo_client = MongoClient("mongodb://localhost:27017/")
 db = mongo_client["chatbot_sante"]
@@ -137,9 +153,9 @@ if weekly_tips_collection.count_documents({}) == 0:
     ]
 
     weekly_tips_collection.insert_many(tips_list)
-    print("🎉 Conseils hebdomadaires insérés avec succès !")
+    print(" Conseils hebdomadaires insérés avec succès !")
 else:
-    print("⚠️ Les recommandations existent déjà.")
+    print(" Les recommandations existent déjà.")
 # ===========================================
 
 #==========================================
@@ -156,7 +172,7 @@ def create_alert(user, alert_type, content):
 
 
 # ------------------------------------------------------------
-# 🧩 DÉCORATEUR POUR CONTRÔLER LES RÔLES
+#  DÉCORATEUR POUR CONTRÔLER LES RÔLES
 # ------------------------------------------------------------
 def role_required(*roles):
     """Décorateur pour restreindre l’accès à certaines routes selon le rôle."""
@@ -175,7 +191,7 @@ def role_required(*roles):
     return decorator
 
 # -------------------------
-# 🔤 Ressources NLTK
+#  Ressources NLTK
 # -------------------------
 try:
     _ = stopwords.words("french")
@@ -190,7 +206,7 @@ lemmatizer = WordNetLemmatizer()
 french_stopwords = set(stopwords.words("french"))
 
 # -------------------------
-# 🧹 Fonction de nettoyage du texte
+#  Fonction de nettoyage du texte
 # -------------------------
 def clean_text(text):
     """Nettoyage basique du texte."""
@@ -205,7 +221,7 @@ def clean_text(text):
 
 
 # ===========================================
-# 📧 TEMPLATE HTML POUR EMAILS
+#  TEMPLATE HTML POUR EMAILS
 # ===========================================
 def email_template(title, body):
     return f"""
@@ -227,7 +243,7 @@ def email_template(title, body):
 
 
 # -------------------------
-# 📧 Fonction d’envoi d’email
+#  Fonction d’envoi d’email
 # -------------------------
 def send_email(to, subject, content):
     try:
@@ -247,7 +263,7 @@ def send_email(to, subject, content):
 
 
 # ===========================================
-# 📊 Fonction d’enregistrement des logs Email
+#  Fonction d’enregistrement des logs Email
 # ===========================================
 def log_email(to, subject, content, status="sent", error_message=None):
     email_logs_collection.insert_one({
@@ -261,7 +277,7 @@ def log_email(to, subject, content, status="sent", error_message=None):
 # ===========================================
 
 # -------------------------
-# 📚 Chargement du dataset
+#  Chargement du dataset
 # -------------------------
 df = pd.read_csv("training_data.csv")
 df.dropna(inplace=True)
@@ -274,7 +290,7 @@ label_encoder = LabelEncoder()
 encoded_labels = label_encoder.fit_transform(reponses)
 
 # -------------------------
-# 🔡 Tokenizer et TF-IDF
+#  Tokenizer et TF-IDF
 # -------------------------
 tokenizer_path = "tokenizer.pkl"
 if os.path.exists(tokenizer_path):
@@ -303,7 +319,7 @@ else:
 tfidf_matrix = tfidf.transform(questions)
 
 # -------------------------
-# 🧠 Construction du modèle
+#  Construction du modèle
 # -------------------------
 def Construction_Model(vocab_size, embed_dim=128, input_length=100, n_classes=None):
     inputs = layers.Input(shape=(input_length,))
@@ -353,7 +369,7 @@ else:
         pass
 
 # -------------------------
-# 💬 Génération de réponse
+#  Génération de réponse
 # -------------------------
 def semantic_fallback(user_text, threshold=0.75):
     cleaned = clean_text(user_text)
@@ -367,7 +383,7 @@ def semantic_fallback(user_text, threshold=0.75):
 
 
 # ===========================================
-# 🩺 RÈGLES MÉDICALES — ALERTES AUTOMATIQUES
+#  RÈGLES MÉDICALES — ALERTES AUTOMATIQUES
 # ===========================================
 pregnancy_alerts = {
     "saignement": "Les saignements doivent être pris au sérieux. Consulte immédiatement un professionnel de santé.",
@@ -393,7 +409,7 @@ def generate_response(user_text):
     username = session.get('username')
 
     # ---------------------------------------------------
-    # 🧭 1️⃣ Détection de requêtes liées aux rappels
+    # 1. Détection de requêtes liées aux rappels
     # ---------------------------------------------------
     if any(k in cleaned for k in ["rappel", "vaccin", "rdv", "rendez", "consultation"]):
         if username:
@@ -422,14 +438,14 @@ def generate_response(user_text):
 
 
         # ---------------------------------------------------
-    # 🩺  ALERTES SELON LES SYMPTÔMES
+    #   ALERTES SELON LES SYMPTÔMES
     # ---------------------------------------------------
     for symptom, alert_msg in pregnancy_alerts.items():
         if symptom in cleaned:
             return (f"<b>Alerte :</b> {alert_msg}", 1.0, "medical_alert")
 
     # ---------------------------------------------------
-    # 📅 ALERTES SELON LA SEMAINE DE GROSSESSE
+    #  ALERTES SELON LA SEMAINE DE GROSSESSE
     # ---------------------------------------------------
     if username:
         user = users_collection.find_one({"username": username})
@@ -444,7 +460,7 @@ def generate_response(user_text):
                 pass
 
     # ---------------------------------------------------
-    # 🧠 2️⃣ Sinon, comportement normal (ton code d’origine)
+    # 2️. Sinon, comportement normal (ton code d’origine)
     # ---------------------------------------------------
     sem_res, sem_score = semantic_fallback(user_text, threshold=0.66)
     if sem_res:
@@ -463,14 +479,15 @@ def generate_response(user_text):
 
 
 # ============================================================
-# 🌿 PAGE D’ACCUEIL
+#  PAGE D’ACCUEIL
 # ============================================================
 @app.route('/')
 def root_redirect():
     return redirect(url_for('home'))
 
 # ============================================================
-# 🏠 PAGE D'ACCUEIL
+#  PAGE D'ACCUEIL
+# ============================================================
 @app.route('/home')
 def home():
     if 'username' in session:
@@ -479,10 +496,10 @@ def home():
 
 
 # ============================================================
-# 👥 AUTHENTIFICATION UTILISATEUR + STOCKAGE DES CONVERSATIONS
+#  AUTHENTIFICATION UTILISATEUR + STOCKAGE DES CONVERSATIONS
 # ============================================================
 # ============================================================
-# 👥 INSCRIPTION UTILISATEUR
+#  INSCRIPTION UTILISATEUR
 # ============================================================
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -516,7 +533,7 @@ def register():
                 photo_filename = username + "_" + secure_filename(uploaded_photo.filename)
                 uploaded_photo.save("static/uploads/" + photo_filename)
 
-            # 🎯 NOUVEAU : semaine de grossesse
+            #  NOUVEAU : semaine de grossesse
             pregnancy_week = request.form.get("pregnancy_week")
             pregnancy_start_date = None
             expected_due = ""
@@ -587,7 +604,7 @@ def register():
 
 
 # ============================================================
-# 👥 CONNEXION UTILISATEUR
+#  CONNEXION UTILISATEUR
 # ============================================================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -617,7 +634,7 @@ def login():
 
 
 # ============================================================
-# 👥 RÉINITIALISATION DU MOT DE PASSE
+#  RÉINITIALISATION DU MOT DE PASSE
 # ============================================================
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
@@ -642,8 +659,8 @@ def forgot_password():
 
             reset_link = url_for('reset_password', token=token, _external=True)
 
-            # 📧 Email HTML
-            subject = "🔐 Réinitialisation de votre mot de passe"
+            #  Email HTML
+            subject = " Réinitialisation de votre mot de passe"
             content = email_template(
                 "Réinitialisation de votre mot de passe",
                 f"""
@@ -656,12 +673,12 @@ def forgot_password():
             )
 
             send_email(email, subject, content)
-            message = "📩 Un lien de réinitialisation a été envoyé à votre email."
+            message = " Un lien de réinitialisation a été envoyé à votre email."
 
     return render_template("forgot_password.html", message=message)
 
 #===========================================================
-# 👥 RÉINITIALISATION DU MOT DE PASSE VIA LE LIEN EMAIL
+#  RÉINITIALISATION DU MOT DE PASSE VIA LE LIEN EMAIL
 #===========================================================
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -696,9 +713,9 @@ def reset_password(token):
             reset_tokens_collection.delete_one({"token": token})
 
         # ============================================
-        # 📧 EMAIL DE CONFIRMATION APRÈS MODIFICATION
+        #  EMAIL DE CONFIRMATION APRÈS MODIFICATION
         # ============================================
-            subject = "🔐 Votre mot de passe a été modifié"
+            subject = " Votre mot de passe a été modifié"
             content = email_template(
                 "Mot de passe modifié",
                  f"""
@@ -719,7 +736,7 @@ def reset_password(token):
 
 
 # ============================================================
-# 👥 DÉCONNEXION UTILISATEUR
+#  DÉCONNEXION UTILISATEUR
 # ============================================================
 @app.route('/logout')
 def logout():
@@ -728,7 +745,7 @@ def logout():
     return redirect(url_for('home'))
 
 # ============================================================
-# 👨‍💼 ROUTES ADMIN — GESTION DES UTILISATEURS
+#  ROUTES ADMIN — GESTION DES UTILISATEURS
 # ============================================================
 
 def admin_required(f):
@@ -749,7 +766,7 @@ def admin():
     total_consultations = consultations_collection.count_documents({})
     
     # Rappels à partir d'aujourd'hui
-    from datetime import date
+
     today = date.today().isoformat()
     total_reminders = reminders_collection.count_documents({"date": {"$gte": today}})
 
@@ -762,7 +779,7 @@ def admin():
     )
 
 # ============================================================
-# 👨‍💼 GESTION DES UTILISATEURS PAR L'ADMIN
+#  GESTION DES UTILISATEURS PAR L'ADMIN
 # ============================================================
 @app.route('/admin/users')
 def manage_users():
@@ -774,7 +791,7 @@ def manage_users():
 
 
 # ============================================================
-# 👨‍💼 GESTION DES CONSULTATIONS PAR L'ADMIN
+#  GESTION DES CONSULTATIONS PAR L'ADMIN
 # ============================================================
 @app.route('/admin/consultations')
 def admin_consultations():
@@ -785,7 +802,7 @@ def admin_consultations():
     return render_template('admin_consultations.html', consultations=consultations)
 
 # ============================================================
-# 👨‍💼 GESTION DES RAPPELS PAR L'ADMIN
+#  GESTION DES RAPPELS PAR L'ADMIN
 # ============================================================
 @app.route('/admin/reminders')
 def admin_reminders():
@@ -796,7 +813,7 @@ def admin_reminders():
     return render_template('admin_reminders.html', reminders=reminders)
 
 # ============================================================
-# 👨‍💼 SUPPRESSION D'UN RAPPEL PAR L'ADMIN
+#  SUPPRESSION D'UN RAPPEL PAR L'ADMIN
 # ============================================================
 @app.route('/admin/delete_reminder/<reminder_id>')
 def delete_reminder(reminder_id):
@@ -808,7 +825,7 @@ def delete_reminder(reminder_id):
 
 
 # ============================================================
-# 👨‍💼 AJOUT D'UN CONSEILLER PAR L'ADMIN
+#  AJOUT D'UN CONSEILLER PAR L'ADMIN
 # ============================================================
 @app.route('/admin/add_conseiller', methods=['GET', 'POST'])
 @admin_required
@@ -820,11 +837,11 @@ def add_conseiller():
         prenom = request.form.get('prenom')
         username = request.form.get('username')
         password = request.form.get('password')
-        email = request.form.get('email')   # 👈 NOUVEAU
+        email = request.form.get('email')  
 
         # Vérification username
         if users_collection.find_one({'username': username}):
-            message = "⚠️ Ce nom d'utilisateur existe déjà."
+            message = " Ce nom d'utilisateur existe déjà."
         else:
             hashed_password = generate_password_hash(password)
 
@@ -834,11 +851,11 @@ def add_conseiller():
                 'username': username,
                 'password': hashed_password,
                 'role': 'conseiller',
-                'email': email,            # 👈 AJOUT OBLIGATOIRE
+                'email': email,          
                 'verified': True
             })
 
-            # 📧 ENVOI AUTOMATIQUE EMAIL DE BIENVENUE AU CONSEILLER
+            #  ENVOI AUTOMATIQUE EMAIL DE BIENVENUE AU CONSEILLER
             try:
                 subject = "Bienvenue dans la plateforme en tant que Conseiller"
                 content = email_template(
@@ -854,12 +871,12 @@ def add_conseiller():
             except:
                 pass
 
-            message = "✅ Conseiller ajouté et email envoyé."
+            message = " Conseiller ajouté et email envoyé."
 
     return render_template('add_conseiller.html', message=message)
 
 # ============================================================
-# 👨‍💼 DISCUSSIONS PRIVÉES PAR LE CONSEILLER
+#  DISCUSSIONS PRIVÉES PAR LE CONSEILLER
 # ============================================================
 @app.route("/conseiller/discussions")
 def conseiller_discussions():
@@ -868,10 +885,10 @@ def conseiller_discussions():
 
     username = session.get("username")
 
-    # 🔥 Récupération du conseiller connecté
+    #  Récupération du conseiller connecté
     user = users_collection.find_one({"username": username})
 
-    # 🔥 Récupérer les consultations approuvées
+    #  Récupérer les consultations approuvées
     consultations_ok = list(consultations_collection.find({
         "conseiller": username,
         "status": "approuvee"
@@ -879,15 +896,15 @@ def conseiller_discussions():
 
     return render_template(
         "conseiller_discussions.html",
-        user=user,                    # 🔥 obligatoire !
+        user=user,                    
         consultations_ok=consultations_ok
     )
 
 
 # ============================================================
-# 👨‍💼 FICHE PATIENTE PAR LE CONSEILLER
+#  FICHE PATIENTE PAR LE CONSEILLER
 # ============================================================
-from datetime import datetime, date
+
 
 @app.route("/conseiller/patient/<username>")
 def fiche_patient(username):
@@ -914,7 +931,7 @@ def fiche_patient(username):
 
 
 # ============================================================
-# 👨‍💼 DASHBOARD CONSEILLER
+#  DASHBOARD CONSEILLER
 # ============================================================
 @app.route('/conseiller/dashboard')
 def conseiller_dashboard():
@@ -943,7 +960,7 @@ def conseiller_dashboard():
     )
 
 # ============================================================
-# 👨‍💼 LISTE DES PATIENTES POUR LE CONSEILLER
+#  LISTE DES PATIENTES POUR LE CONSEILLER
 # ============================================================
 @app.route('/conseiller/patients')
 def conseiller_patients():
@@ -954,7 +971,7 @@ def conseiller_patients():
     return render_template('conseiller_patients.html', patients=patients)
 
 # ============================================================
-# 👨‍💼 PROFIL DU CONSEILLER
+#  PROFIL DU CONSEILLER
 # ============================================================
 @app.route('/conseiller/profile')
 def conseiller_profile():
@@ -965,7 +982,7 @@ def conseiller_profile():
     return render_template("conseiller_profile.html", user=user)
 
 # ============================================================
-# 👨‍💼 MODIFICATION DU PROFIL DU CONSEILLER
+#  MODIFICATION DU PROFIL DU CONSEILLER
 # ============================================================
 @app.route('/conseiller/profile/edit', methods=['GET', 'POST'])
 def conseiller_profile_edit():
@@ -1007,7 +1024,7 @@ def conseiller_profile_edit():
 
 
 # ============================================================
-# 👨‍💼 LISTE DES PATIENTES POUR L'ADMIN
+#  LISTE DES PATIENTES POUR L'ADMIN
 # ============================================================
 @app.route('/admin/list_patients')
 @admin_required
@@ -1017,7 +1034,7 @@ def list_patients():
     return render_template('list_patients.html', patients=patients)
 
 # ============================================================
-# 👨‍💼 LISTE DES CONSEILLERS POUR L'ADMIN
+#  LISTE DES CONSEILLERS POUR L'ADMIN
 # ============================================================
 @app.route('/admin/list_conseillers')
 @admin_required
@@ -1027,7 +1044,7 @@ def list_conseillers():
     return render_template('list_conseillers.html', conseillers=conseillers)
 
 # ============================================================
-# 👨‍💼 SUPPRESSION D'UN UTILISATEUR PAR L'ADMIN
+#  SUPPRESSION D'UN UTILISATEUR PAR L'ADMIN
 # ============================================================
 @app.route('/admin/delete_user/<user_id>')
 @admin_required
@@ -1039,7 +1056,7 @@ def delete_user(user_id):
 
 
 # ============================================================
-# ✏️ MODIFICATION DES INFORMATIONS UTILISATEUR
+#  MODIFICATION DES INFORMATIONS UTILISATEUR
 # ============================================================
 @app.route('/admin/edit_user/<user_id>', methods=['GET', 'POST'])
 @admin_required
@@ -1066,7 +1083,7 @@ def edit_user(user_id):
                 'role': role
             }}
         )
-        message = "✅ Informations mises à jour avec succès !"
+        message = " Informations mises à jour avec succès !"
         return redirect(url_for('admin'))
 
     return render_template('edit_user.html', user=user, message=message)
@@ -1115,7 +1132,7 @@ def email_logs():
 
 
 # ============================================================
-# ⏰ GESTION DES RAPPELS MÉDICAUX
+#  GESTION DES RAPPELS MÉDICAUX
 # ============================================================
 @app.route('/reminders', methods=['GET', 'POST'])
 def reminders():
@@ -1142,9 +1159,9 @@ def reminders():
                 "time": reminder_time,
                 "notified": False
             })
-            message = "✅ Rappel ajouté avec succès !"
+            message = " Rappel ajouté avec succès !"
         else:
-            message = "❌ Veuillez remplir tous les champs."
+            message = " Veuillez remplir tous les champs."
 
     # ----- SUPPRESSION D'UN RAPPEL -----
     if request.method == 'POST' and 'delete_id' in request.form:
@@ -1154,7 +1171,7 @@ def reminders():
                 "_id": ObjectId(delete_id),
                 "username": username
             })
-            message = "🗑️ Rappel supprimé avec succès."
+            message = " Rappel supprimé avec succès."
 
     # ----- MODIFICATION D'UN RAPPEL -----
     if request.method == 'POST' and 'edit_id' in request.form:
@@ -1174,7 +1191,7 @@ def reminders():
                     "time": new_time
                 }}
             )
-            message = "✏️ Rappel modifié avec succès."
+            message = " Rappel modifié avec succès."
 
     # ----- LISTER LES RAPPELS -----
     user_reminders = list(reminders_collection.find({"username": username}).sort("date", 1))
@@ -1182,9 +1199,9 @@ def reminders():
 
 
 # ============================
-# 👩‍⚕️ PROFIL MÉDICAL PATIENT
+#  PROFIL MÉDICAL PATIENT
 # ============================
-from datetime import datetime, timedelta
+
 @app.route("/profile")
 def profile():
     if "username" not in session:
@@ -1197,7 +1214,7 @@ def profile():
     # Contact d'urgence
     emergency = profile.get("emergency_contact", {"name": "", "phone": ""})
 
-    # 🎯 Charger la semaine de grossesse
+    # Charger la semaine de grossesse
     pregnancy_week = None
     if profile.get("pregnancy_week"):
         try:
@@ -1214,11 +1231,9 @@ def profile():
     )
 
 
+
 # ============================================================
-# ✏️ MODIFICATION DU PROFIL MÉDICAL PATIENT
-# ============================================================
-# ============================================================
-# ✏️ MODIFICATION DU PROFIL MÉDICAL PATIENT
+# MODIFICATION DU PROFIL MÉDICAL PATIENT
 # ============================================================
 @app.route('/profile/edit', methods=["GET", "POST"])
 def profile_edit():
@@ -1303,7 +1318,7 @@ def admin_view_profile(user_id):
 
 
 # ============================================================
-# 💬 ROUTE PRINCIPALE DU CHATBOT
+#  ROUTE PRINCIPALE DU CHATBOT
 # ============================================================
 def fetch_last_messages(username, limit=100):
     docs = list(conversations_collection.find({'username': username}, {'_id': 0}).sort([('_id', -1)]).limit(limit))
@@ -1376,7 +1391,7 @@ def index():
                 {"$push": {"messages": {"sender": "user", "text": user_msg}}}
             )
 
-            # ⬅ Nouvelle réponse du bot
+            # Nouvelle réponse du bot
             bot_reply, score, source = generate_response(user_msg)
 
             conversations_collection.update_one(
@@ -1400,13 +1415,13 @@ def index():
         conversations=all_conversations,
         active_conv=active_conv,
         messages=active_conv["messages"],
-        alerts=alerts   # <-- 🔥 AJOUT IMPORTANT
+        alerts=alerts   
     )
 
 
 
 # ============================================================
-# ➕ CRÉATION D'UNE NOUVELLE CONVERSATION
+#  CRÉATION D'UNE NOUVELLE CONVERSATION
 # ============================================================
 @app.route('/new_conversation')
 def new_conversation():
@@ -1430,7 +1445,7 @@ def new_conversation():
     return redirect(url_for('index'))
 
 # ============================================================
-# 🔄 OUVRIR UNE CONVERSATION EXISTANTE
+#  OUVRIR UNE CONVERSATION EXISTANTE
 # ============================================================
 @app.route('/open_conversation/<cid>')
 def open_conversation(cid):
@@ -1438,7 +1453,7 @@ def open_conversation(cid):
     return redirect(url_for("index"))
 
 # ============================================================
-# 🗑️ SUPPRESSION D'UNE CONVERSATION
+#  SUPPRESSION D'UNE CONVERSATION
 # ============================================================
 @app.route("/delete_conversation")
 def delete_conversation():
@@ -1469,7 +1484,7 @@ def delete_conversation():
 
 
 # ============================================================
-# ✏️ RENOMMER UNE CONVERSATION
+#  RENOMMER UNE CONVERSATION
 # ============================================================
 @app.route("/rename_conversation", methods=["POST"])
 def rename_conversation():
@@ -1488,7 +1503,7 @@ def rename_conversation():
 
 
 # ============================================================
-# 📊 METRICS & PERFORMANCE
+#  METRICS & PERFORMANCE
 # ============================================================
 @app.route('/metrics')
 @role_required('admin')
@@ -1532,7 +1547,7 @@ def reset():
     return redirect(url_for('index'))
 
 # ============================================================
-# 🩺 DEMANDE DE CONSULTATION PAR UNE PATIENTE
+#  DEMANDE DE CONSULTATION PAR UNE PATIENTE
 # ============================================================
 @app.route('/consultation/request', methods=['GET', 'POST'])
 def request_consultation():
@@ -1561,15 +1576,15 @@ def request_consultation():
                 "status": "en_attente"
             })
 
-            message = "✅ Votre demande de consultation a été envoyée avec succès."
+            message = " Votre demande de consultation a été envoyée avec succès."
 
             # -----------------------------------------
-            # 📧 Envoi EMAIL AUTOMATIQUE AU CONSEILLER
+            #  Envoi EMAIL AUTOMATIQUE AU CONSEILLER
             # -----------------------------------------
             conseiller_user = users_collection.find_one({"username": conseiller})
 
             if conseiller_user and conseiller_user.get("email"):
-                subject = "📩 Nouvelle demande de consultation"
+                subject = " Nouvelle demande de consultation"
                 content = f"""
                 <h2>Nouvelle demande de consultation</h2>
                 <p><strong>Patiente :</strong> {username}</p>
@@ -1583,12 +1598,12 @@ def request_consultation():
                 send_email(conseiller_user["email"], subject, content)
 
         else:
-            message = "❌ Veuillez remplir tous les champs."
+            message = " Veuillez remplir tous les champs."
 
     return render_template('request_consultation.html', conseillers=conseillers, message=message)
 
 # ============================================================
-# 🩺 LISTE DES DEMANDES DE CONSULTATION D'UNE PATIENTE
+#  LISTE DES DEMANDES DE CONSULTATION D'UNE PATIENTE
 # ============================================================
 @app.route('/consultation/my_requests')
 def my_consultations():
@@ -1600,7 +1615,7 @@ def my_consultations():
     return render_template('my_consultations.html', demandes=demandes)
 
 # ============================================================
-# 🩺 LISTE DES DEMANDES DE CONSULTATION D'UNE PATIENTE
+#  LISTE DES DEMANDES DE CONSULTATION D'UNE PATIENTE
 # ============================================================
 @app.route("/conseiller/consultations", methods=["GET", "POST"])
 def conseiller_consultations():
@@ -1613,7 +1628,7 @@ def conseiller_consultations():
     user = users_collection.find_one({"username": username})
 
     # ============================
-    # 🔥 TRAITEMENT DES ACTIONS
+    #  TRAITEMENT DES ACTIONS
     # ============================
     if request.method == "POST":
         consult_id = request.form.get("consult_id")
@@ -1630,7 +1645,7 @@ def conseiller_consultations():
         # ✔ APPROUVER LA CONSULTATION
         # ==========================================
         if action == "approve":
-            # 🔥 Mise à jour consultation
+            #  Mise à jour consultation
             consultations_collection.update_one(
                 {"_id": ObjectId(consult_id)},
                 {"$set": {"status": "approuvee", "heure": heure}}
@@ -1638,7 +1653,7 @@ def conseiller_consultations():
             
 
             # ==========================================
-            # ➕ AJOUT DES RAPPELS MULTIPLES
+            #  AJOUT DES RAPPELS MULTIPLES
             # ==========================================
             date_obj = datetime.strptime(consult["date"], "%Y-%m-%d")
             heure_obj = datetime.strptime(heure, "%H:%M")
@@ -1647,7 +1662,7 @@ def conseiller_consultations():
             now = datetime.now()
 
             # -------------------------------
-            # 🟦 FONCTION POUR CREER UN RAPPEL
+            #  FONCTION POUR CREER UN RAPPEL
             # -------------------------------
             def create_reminder(username, message, remind_datetime):
                 if remind_datetime > now:  # on crée seulement si le rappel est dans le futur
@@ -1675,7 +1690,7 @@ def conseiller_consultations():
 
 
             # ===========================
-            # 🔹 Rappel patient
+            #  Rappel patient
             # ===========================
             message_patient = f"Rappel : Consultation avec {username} (motif : {consult['motif']})"
 
@@ -1702,7 +1717,7 @@ def conseiller_consultations():
 
 
             # ===========================
-            # 🔹 Rappel conseiller
+            #  Rappel conseiller
             # ===========================
             message_conseiller = f"Rappel : Consultation avec {patient_username}"
 
@@ -1729,7 +1744,7 @@ def conseiller_consultations():
 
 
             # ==========================================
-            # 📧 ENVOI EMAIL AU PATIENT
+            #  ENVOI EMAIL AU PATIENT
             # ==========================================
             if patient_email:
                 send_email(
@@ -1747,7 +1762,7 @@ def conseiller_consultations():
                 )
 
         # ==========================================
-        # ❌ REJETER LA CONSULTATION
+        #  REJETER LA CONSULTATION
         # ==========================================
         elif action == "reject":
             consultations_collection.update_one(
@@ -1769,7 +1784,7 @@ def conseiller_consultations():
             if patient_email:
                 send_email(
                     patient_email,
-                    "❌ Consultation rejetée",
+                    " Consultation rejetée",
                     email_template(
                         "Demande rejetée",
                         f"Votre demande de consultation a été rejetée par <strong>{username}</strong>."
@@ -1779,7 +1794,7 @@ def conseiller_consultations():
         return redirect(url_for("conseiller_consultations"))
 
     # ============================
-    # 🔥 RÉCUPÉRATION DES DONNÉES
+    #  RÉCUPÉRATION DES DONNÉES
     # ============================
     consultations_attente = list(consultations_collection.find({
         "conseiller": username,
@@ -1808,7 +1823,7 @@ def conseiller_consultations():
 
 
 # ============================================================
-# 💬 CHAT ENTRE PATIENTE ET CONSEILLER
+#  CHAT ENTRE PATIENTE ET CONSEILLER
 # ============================================================
 @app.route('/chat/<conseiller>', methods=['GET', 'POST'])
 def chat_with_conseiller(conseiller):
@@ -1827,7 +1842,7 @@ def chat_with_conseiller(conseiller):
                 "timestamp": datetime.now(),
                 "seen": False
             })
-            # 🔔 Créer une alerte pour le conseiller
+            #  Créer une alerte pour le conseiller
             alerts_collection.insert_one({
                 "user": conseiller,
                 "type": "message",
@@ -1854,7 +1869,7 @@ def chat_with_conseiller(conseiller):
     return render_template("chat.html", messages=messages, conseiller=conseiller)
 
 # ============================================================
-# 💬 CHAT ENTRE CONSEILLER ET PATIENTE
+#  CHAT ENTRE CONSEILLER ET PATIENTE
 # ============================================================
 @app.route('/chat_patient/<patient>', methods=['GET', 'POST'])
 def chat_patient(patient):
@@ -1901,7 +1916,7 @@ def chat_patient(patient):
 
 
 # ============================================================
-# 🔄 MISE À JOUR AUTOMATIQUE DES STATUTS DE CONSULTATION
+#  MISE À JOUR AUTOMATIQUE DES STATUTS DE CONSULTATION
 # ============================================================
 @app.route('/consultation/status')
 def get_consultation_status():
@@ -1918,11 +1933,9 @@ def get_consultation_status():
     return {"demandes": demandes}
 
 # ============================================================
-# ⏰ VÉRIFICATION DES RAPPELS ET ENVOI D'EMAILS AUTOMATIQUES
+#  VÉRIFICATION DES RAPPELS ET ENVOI D'EMAILS AUTOMATIQUES
 # ============================================================
-from threading import Thread
-import time
-from datetime import datetime
+
 
 def check_reminders():
     """Vérifie toutes les 30 secondes les rappels et envoie un email automatique."""
@@ -1955,7 +1968,7 @@ def check_reminders():
 
             send_email(
                 email,
-                "📅 Rappel de consultation",
+                " Rappel de consultation",
                 email_template(
                     "Rappel de consultation",
                     f"""
@@ -1975,15 +1988,8 @@ def check_reminders():
 
 
 # ============================================================
-# 📄 GÉNÉRATION DE LA FICHE PATIENT EN PDF PAR LE CONSEILLER
+#  GÉNÉRATION DE LA FICHE PATIENT EN PDF PAR LE CONSEILLER
 # ============================================================
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import cm
-from reportlab.lib import colors
-from flask import send_file
-
 
 @app.route("/conseiller/patient/<username>/pdf")
 def patient_fiche_pdf(username):
@@ -2055,13 +2061,12 @@ def patient_fiche_pdf(username):
     return send_file(pdf_path, as_attachment=True)
 
 # ============================================================
-# 📬 ENVOI AUTOMATIQUE DES RECOMMANDATIONS HEBDOMADAIRES
+#  ENVOI AUTOMATIQUE DES RECOMMANDATIONS HEBDOMADAIRES
 # ============================================================
-from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import datetime, timedelta
+
 
 def send_weekly_pregnancy_tips():
-    print("📬 Envoi des recommandations hebdomadaires…")
+    print(" Envoi des recommandations hebdomadaires…")
 
     patients = users_collection.find({"role": "patiente"})
 
@@ -2097,12 +2102,12 @@ def send_weekly_pregnancy_tips():
         try:
             send_email(
                 patiente.get("email"),
-                f"🌸 Conseils pour votre semaine {week} de grossesse",
+                f" Conseils pour votre semaine {week} de grossesse",
                 f"""
                 <h2>Recommandation de la semaine {week}</h2>
                 <p>{advice}</p>
                 <br>
-                <p>Nous vous souhaitons une excellente semaine de grossesse 💕</p>
+                <p>Nous vous souhaitons une excellente semaine de grossesse </p>
                 """
             )
             create_alert(
@@ -2135,7 +2140,7 @@ scheduler.start()
 
 
 # ============================================================
-# 🚀 LANCEMENT DE L’APPLICATION
+#  LANCEMENT DE L’APPLICATION
 # ============================================================
 if __name__ == '__main__':
     # Thread pour activer l'envoi automatique d'emails

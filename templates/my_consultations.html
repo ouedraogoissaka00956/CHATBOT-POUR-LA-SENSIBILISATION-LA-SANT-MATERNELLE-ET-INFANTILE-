@@ -11,7 +11,7 @@
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-left">
-            <h2>👩‍⚕️ Mes consultations</h2>
+            <h2> Mes consultations</h2>
         </div>
         <div class="nav-right">
             <a href="{{ url_for('index') }}">Accueil</a>
@@ -22,7 +22,7 @@
 
     <!-- CONTENEUR CENTRAL -->
     <div class="container">
-        <h1>📅 Suivi de mes demandes</h1>
+        <h1> Suivi de mes demandes</h1>
         <p style="text-align:center;">Les statuts se mettent à jour automatiquement.</p>
 
         <table class="table">
@@ -61,7 +61,7 @@
                     <td>
                         {% if d.status == "approuvee" %}
                             <a href="{{ url_for('chat_with_conseiller', conseiller=d.conseiller) }}" class="chat-btn">
-                                💬 Discuter
+                                 Discuter
                             </a>
                         {% else %}
                             -
@@ -73,7 +73,7 @@
             </tbody>
         </table>
 
-        <button class="refresh-btn" onclick="refreshConsultations()">🔄 Actualiser maintenant</button>
+        <button class="refresh-btn" onclick="refreshConsultations()"> Actualiser maintenant</button>
     </div>
 
 <script>
@@ -99,7 +99,7 @@ async function refreshConsultations() {
                 <td class="status ${d.status}">${formatStatus(d.status, d.heure)}</td>
                 <td>
                     ${d.status === "approuvee"
-                        ? `<a href="/chat/${d.conseiller}" class="chat-btn">💬 Discuter</a>`
+                        ? `<a href="/chat/${d.conseiller}" class="chat-btn"> Discuter</a>`
                         : "-"
                     }
                 </td>

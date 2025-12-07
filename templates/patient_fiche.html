@@ -20,12 +20,12 @@
         <p class="role">Conseiller</p>
     </div>
 
-    <a href="{{ url_for('conseiller_dashboard') }}">🏠 Tableau de bord</a>
-    <a href="{{ url_for('conseiller_patients') }}" class="active">👩‍🍼 Patientes</a>
-    <a href="{{ url_for('conseiller_consultations') }}">📋 Consultations</a>
-    <a href="{{ url_for('conseiller_discussions') }}">💬 Discussions</a>
-    <a href="{{ url_for('conseiller_profile') }}">👤 Mon Profil</a>
-    <a href="{{ url_for('logout') }}">🔌 Déconnexion</a>
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_patients') }}" class="active"> Patientes</a>
+    <a href="{{ url_for('conseiller_consultations') }}"> Consultations</a>
+    <a href="{{ url_for('conseiller_discussions') }}"> Discussions</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
 </div>
 
 
@@ -90,11 +90,11 @@
         </div>
 
         <div class="fiche-actions">
-            <a href="{{ url_for('conseiller_patients') }}" class="back-btn">⬅ Retour</a>
+            <a href="{{ url_for('conseiller_patients') }}" class="back-btn"> Retour</a>
 
             <a href="{{ url_for('patient_fiche_pdf', username=patiente.username) }}"
                class="pdf-btn" target="_blank">
-                📄 Exporter en PDF
+                 Exporter en PDF
             </a>
         </div>
 

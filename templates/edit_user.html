@@ -8,18 +8,18 @@
 <body>
   <nav class="navbar">
     <div class="nav-left">
-      <h2>👨‍💼 Administration</h2>
+      <h2> Administration</h2>
     </div>
     <div class="nav-right">
-      <a href="{{ url_for('admin') }}">🏠 Tableau de bord</a>
-      <a href="{{ url_for('list_patients') }}">👩‍🍼 Patientes</a>
-      <a href="{{ url_for('list_conseillers') }}">🧑‍⚕️ Conseillers</a>
-      <a href="{{ url_for('logout') }}">🚪 Déconnexion</a>
+      <a href="{{ url_for('admin') }}"> Tableau de bord</a>
+      <a href="{{ url_for('list_patients') }}"> Patientes</a>
+      <a href="{{ url_for('list_conseillers') }}"> Conseillers</a>
+      <a href="{{ url_for('logout') }}"> Déconnexion</a>
     </div>
   </nav>
 
   <div class="container">
-    <h2>✏️ Modifier l’utilisateur : {{ user.username }}</h2>
+    <h2> Modifier l’utilisateur : {{ user.username }}</h2>
 
     <form method="POST">
       <input type="text" name="nom" value="{{ user.nom }}" placeholder="Nom" required>
@@ -33,7 +33,7 @@
         <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrateur</option>
       </select>
 
-      <button type="submit">💾 Enregistrer les modifications</button>
+      <button type="submit"> Enregistrer les modifications</button>
     </form>
 
     {% if message %}

@@ -20,12 +20,12 @@
         <p class="role">Conseiller</p>
     </div>
 
-    <a href="{{ url_for('conseiller_dashboard') }}">🏠 Tableau de bord</a>
-    <a href="{{ url_for('conseiller_consultations') }}">📋 Liste des consultations</a>
-    <a href="{{ url_for('conseiller_discussions') }}">💬 Discussions</a>
-    <a href="{{ url_for('conseiller_patients') }}">👩‍🍼 Patientes</a>
-    <a href="{{ url_for('conseiller_profile') }}">👤 Mon Profil</a>
-    <a href="{{ url_for('logout') }}">🔌 Déconnexion</a>
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_consultations') }}"> Liste des consultations</a>
+    <a href="{{ url_for('conseiller_discussions') }}"> Discussions</a>
+    <a href="{{ url_for('conseiller_patients') }}"> Patientes</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
 </div>
 <!-- ===== CONTENU ===== -->
 
@@ -44,7 +44,7 @@
             <p><strong>Date :</strong> {{ c.date }} à {{ c.heure }}</p>
 
             <a class="chat-btn" href="{{ url_for('chat_patient', patient=c.patient) }}">
-                💬 Discuter
+                 Discuter
             </a>
         </div>
     {% endfor %}
