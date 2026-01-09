@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Santé Maternité</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- ======== NAVBAR ========== -->
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='femme.png') }}" class="logo">
+        <h2>Chatbot Santé Maternité</h2>
+    </div>
+    <div class="menu-container">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    </div>
+
+
+    <div class="nav-right">
+        {% if session['role'] == 'patiente' %}
+            <a href="{{ url_for('request_consultation') }}">Demander Consultation</a>
+            <a href="{{ url_for('my_consultations') }}">Mes Consultations</a>
+            <a href="{{ url_for('reminders') }}">Mes Rappels</a>
+        {% endif %}
+
+       {% if user and user.photo %}
+            <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" class="pp-navbar">
+        {% else %}
+            <img src="{{ url_for('static', filename='default.png') }}" class="pp-navbar">
+        {% endif %}
+
+
+        <a href="{{ url_for('profile') }}" class="profile-btn">Mon Profil</a>
+        <a href="{{ url_for('logout') }}" class="logout">Déconnexion</a>
+    </div>
+
+</nav>
+<!-- ======== ALERTES ========== -->
+<div class="alerts-box">
+    {% for a in alerts %}
+        <div class="alert-card {{ a.type }}">
+            <p>{{ a.content }}</p>
+            <span class="date">{{ a.timestamp.strftime('%d/%m %H:%M') }}</span>
+        </div>
+    {% endfor %}
+
+    {% if alerts|length == 0 %}
+        <p class="no-alert">Aucune alerte pour le moment </p>
+    {% endif %}
+</div>
+
+
+
+<!-- ======== CONTENEUR GLOBAL ========== -->
+<div class="main-container">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+
+        <button class="close-sidebar" onclick="toggleSidebar()">✖</button>
+
+        <h3>Conversations</h3>
+
+        <a href="{{ url_for('new_conversation') }}" class="new-conv-btn">Nouvelle conversation</a>
+
+        <!-- BARRE DE RECHERCHE -->
+        <input type="text" id="search" class="search-bar" placeholder="Rechercher...">
+
+        <div id="conv-list">
+            {% for conv in conversations %}
+            <div class="conversation-block">
+
+                <!-- Ouvrir -->
+                <a href="{{ url_for('open_conversation', cid=conv._id) }}"
+                   class="conversation-item {% if conv._id == active_conv._id %}active{% endif %}"
+                   data-title="{{ conv.name|lower }}">
+                    {{ conv.name }}
+                </a>
+
+                <!-- Renommer -->
+                <a href="{{ url_for('rename_conversation', cid=conv._id) }}" class="rename-btn">Editer</a>
+
+                <!-- Supprimer -->
+                <a class="delete-btn"
+                   href="{{ url_for('delete_conversation', cid=conv._id) }}"
+                   onclick="return confirm('Supprimer cette conversation ?');">
+                   Supprimer
+                </a>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="no-results" class="no-results" style="display:none;">
+            Aucune conversation trouvée
+        </div>
+
+    </aside>
+
+
+    <!-- ======== CHATBOX ========== -->
+    <section class="chat-container">
+
+        <div class="chat-header">
+            <h1>Votre assistante </h1>
+        </div>
+
+        <div class="chat-box" id="chat-box">
+            {% for msg in active_conv.messages %}
+
+                {% if msg.sender == "user" %}
+                    <div class="message-row user-row">
+                        <div class="bubble user-bubble">{{ msg.text }}</div>
+
+                        {% if user and user.photo %}
+                            <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" class="avatar user-avatar">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='uploads/image.png') }}" class="avatar user-avatar">
+                        {% endif %}
+                    </div>
+
+                {% else %}
+                    <div class="message-row bot-row">
+                        <img src="{{ url_for('static', filename='chatbot.png') }}" class="avatar bot-avatar">
+
+                        <div class="bubble bot-bubble">
+                            {{ msg.text|safe }}
+                            <div class="meta">Confiance : {{ msg.score }} ({{ msg.source }})</div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+
+        <!-- INPUT -->
+        <form method="POST" class="input-area">
+            <input type="text" name="input" placeholder="Écris ta question..." required>
+            <button type="submit">Envoyer</button>
+        </form>
+
+    </section>
+
+</div>
+
+<script>
+    // Auto-scroll chat
+    const chatBox = document.getElementById('chat-box');
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Mobile sidebar
+    function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+    }
+
+
+    // Recherche
+    const search = document.getElementById("search");
+    const convList = document.getElementById("conv-list");
+    const noResults = document.getElementById("no-results");
+    const convItems = convList.querySelectorAll(".conversation-item");
+
+    search.addEventListener("input", () => {
+        const q = search.value.toLowerCase();
+        let found = false;
+
+        convItems.forEach(item => {
+            if (item.dataset.title.includes(q)) {
+                item.parentElement.style.display = "flex";
+                found = true;
+            } else {
+                item.parentElement.style.display = "none";
+            }
+        });
+
+        noResults.style.display = found ? "none" : "block";
+    });
+</script>
+
+</body>
+</html>

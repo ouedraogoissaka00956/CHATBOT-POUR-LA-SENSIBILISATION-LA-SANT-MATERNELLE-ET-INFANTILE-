@@ -1,0 +1,222 @@
+/* === VARIABLES === */
+:root {
+    --vert-principal: #86a391;
+    --vert-clair: #a9bfae;
+    --vert-fonce: #6f907a;
+    --rouge: #d9534f;
+    --beige-fond: #f7f5f2;
+    --blanc: #ffffff;
+    --gris-text: #444;
+    --violet: #6a4c93;
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--beige-fond);
+    font-family: "Poppins", sans-serif;
+    color: var(--gris-text);
+}
+
+/* === CONTAINER GLOBAL === */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 10px;
+}
+
+/* TITRE */
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: left;
+    margin-bottom: 10px;
+    color: var(--vert-principal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* === BOUTON RETOUR === */
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    background: var(--vert-principal);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background: var(--vert-fonce);
+}
+
+/* === BARRE FILTRE === */
+.filter-section {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-section input,
+.filter-section select {
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 2px solid var(--vert-clair);
+    border-radius: 10px;
+    background: var(--blanc);
+    width: 220px;
+}
+
+.filter-section button {
+    background: var(--vert-principal);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.filter-section button:hover {
+    background: var(--vert-fonce);
+}
+
+/* === CARD === */
+.card {
+    background: var(--blanc);
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* === TABLE === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+thead tr {
+    background: var(--vert-principal);
+    color: white;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    font-size: 14px;
+}
+
+tbody tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+tbody tr:hover {
+    background: rgba(134,163,145,0.15);
+}
+
+/* Badges Statut */
+.status-success {
+    color: var(--vert-principal);
+    font-weight: 700;
+}
+
+.status-failed {
+    color: var(--rouge);
+    font-weight: 700;
+}
+
+/* === BOUTON OUVRIR === */
+.open-btn {
+    background: var(--violet);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.open-btn:hover {
+    background: #563c7c;
+}
+
+/* === PAGINATION === */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.page-item {
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--vert-clair);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.page-item.active {
+    background: var(--vert-principal);
+}
+
+.page-item:hover {
+    background: var(--vert-fonce);
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    width: 80%;
+    max-width: 700px;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--vert-clair);
+}
+
+.modal-close {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+iframe {
+    width: 100%;
+    height: 350px;
+    border-radius: 10px;
+    border: 2px solid var(--vert-clair);
+}

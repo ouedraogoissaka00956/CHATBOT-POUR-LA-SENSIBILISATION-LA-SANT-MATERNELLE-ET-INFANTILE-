@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une Consultation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2> Nouvelle consultation</h2>
+    <form method="POST">
+        <label>Patiente :</label>
+        <select name="patient" required>
+            <option value="">-- Sélectionner --</option>
+            {% for p in patients %}
+            <option value="{{ p.username }}">{{ p.prenom }} {{ p.nom }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="date" name="date" required>
+        <input type="text" name="motif" placeholder="Motif de la consultation" required>
+        <textarea name="compte_rendu" placeholder="Compte rendu" rows="4"></textarea>
+
+        <button type="submit"> Enregistrer</button>
+    </form>
+
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+</div>
+</body>
+</html>

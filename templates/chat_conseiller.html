@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat avec {{ patient }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+</head>
+
+<body>
+
+<div class="chat-container">
+
+    <!-- Sidebar -->
+    <div class="chat-sidebar">
+        <h3> Conseiller</h3>
+        <p class="user">{{ session['username'] }}</p>
+
+        <a class="btn-back" href="{{ url_for('conseiller_dashboard') }}"> Retour</a>
+    </div>
+
+    <!-- Zone de discussion -->
+    <div class="chat-box">
+
+        <div class="chat-header">
+            <h2>Discussion avec : {{ patient }}</h2>
+        </div>
+
+        <div class="messages">
+            {% for msg in messages %}
+                {% if msg.sender == session['username'] %}
+                    <div class="message message-right">
+                        <p>{{ msg.message }}</p>
+
+                        <span class="time">
+                            {{ msg.timestamp.strftime("%d/%m %H:%M") }}
+
+                            {% if msg.seen %}
+                                <span class="seen seen-yes">✔✔</span>
+                            {% else %}
+                                <span class="seen seen-no">✔</span>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                {% else %}
+                    <div class="message message-left">
+                        <p>{{ msg.message }}</p>
+                        <span class="time">{{ msg.timestamp.strftime("%d/%m %H:%M") }}</span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form method="POST" class="chat-input">
+            <input type="text" name="message" placeholder="Votre message..." required>
+            <button type="submit">Envoyer</button>
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

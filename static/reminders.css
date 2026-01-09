@@ -1,0 +1,193 @@
+/* Couleurs et variables globales */
+:root {
+    --vert-principal: #86a391;
+    --vert-clair: #a9bfae;
+    --beige-fond: #f7f5f2;
+    --gris-text: #444;
+    --blanc: #ffffff;
+}
+
+/* Général */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--beige-fond);
+    color: var(--gris-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--vert-principal);
+    color: var(--blanc);
+    padding: 15px 30px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-left h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.nav-right a {
+    color: var(--blanc);
+    margin-left: 20px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: background 0.3s;
+    background: var(--vert-clair);
+}
+
+.nav-right a:hover {
+    border: 2px solid var(--beige-fond);
+    color: var(--gris-text);
+    background: transparent;
+    opacity: 0.8;
+}
+
+.nav-right a.active {
+    text-decoration: underline;
+}
+
+/* ===== CONTENEUR PRINCIPAL ===== */
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: var(--blanc);
+    border-radius: 20px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.container h2 {
+    color: var(--vert-principal);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* ===== FORMULAIRE ===== */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="time"] {
+    flex: 1 1 48%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+    font-size: 0.95em;
+    transition: all 0.2s ease;
+}
+
+form input:focus {
+    border-color: var(--vert-principal);
+    box-shadow: 0 0 5px rgba(134,163,145,0.3);
+}
+
+form button {
+    flex: 1 1 100%;
+    background: var(--vert-principal);
+    color: var(--blanc);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form button:hover {
+    background: var(--vert-clair);
+}
+
+/* ===== FORMULAIRE DE MODIFICATION ===== */
+.edit-box {
+    margin-top: 10px;
+    background: #f5f5f5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border-left: 4px solid var(--vert-principal);
+}
+
+.edit-box summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--vert-principal);
+    margin-bottom: 6px;
+}
+
+.edit-box form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.edit-box input {
+    flex: 1 1 45%;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.edit-btn {
+    background: var(--vert-principal);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.edit-btn:hover {
+    background: var(--vert-clair);
+}
+
+
+/* ===== MESSAGE ===== */
+p {
+    text-align: center;
+    color: var(--vert-principal);
+    font-weight: 500;
+}
+
+/* Style du logo */
+.login-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: block;           /* Permet de centrer avec margin auto */
+    margin: 0 auto 15px auto; /* Centre horizontalement + marge en bas */
+    border: var(--vert-principal) 4px solid;
+}

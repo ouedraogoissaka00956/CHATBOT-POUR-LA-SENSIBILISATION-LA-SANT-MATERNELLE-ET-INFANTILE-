@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin2.css') }}">
+</head>
+<body>
+
+{% include 'admin_menu.html' %}
+
+<div class="dashboard-container">
+
+    <h1 class="title"> Tableau de bord Administrateur</h1>
+
+    <div class="cards">
+
+        <div class="card">
+            <h2>{{ total_patients }}</h2>
+            <p>Patients</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ total_conseillers }}</h2>
+            <p>Conseillers</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ total_consultations }}</h2>
+            <p>Demandes de consultations</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ total_reminders }}</h2>
+            <p>Rappels à venir</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modifier un utilisateur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <h2> Administration</h2>
+    </div>
+    <div class="nav-right">
+      <a href="{{ url_for('admin') }}"> Tableau de bord</a>
+      <a href="{{ url_for('list_patients') }}"> Patientes</a>
+      <a href="{{ url_for('list_conseillers') }}"> Conseillers</a>
+      <a href="{{ url_for('logout') }}"> Déconnexion</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2> Modifier l’utilisateur : {{ user.username }}</h2>
+
+    <form method="POST">
+      <input type="text" name="nom" value="{{ user.nom }}" placeholder="Nom" required>
+      <input type="text" name="prenom" value="{{ user.prenom }}" placeholder="Prénom" required>
+      <input type="text" name="username" value="{{ user.username }}" placeholder="Nom d'utilisateur" required>
+
+      <label for="role">Rôle :</label>
+      <select name="role" id="role">
+        <option value="patiente" {% if user.role == 'patiente' %}selected{% endif %}>Patiente</option>
+        <option value="conseiller" {% if user.role == 'conseiller' %}selected{% endif %}>Conseiller</option>
+        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrateur</option>
+      </select>
+
+      <button type="submit"> Enregistrer les modifications</button>
+    </form>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>

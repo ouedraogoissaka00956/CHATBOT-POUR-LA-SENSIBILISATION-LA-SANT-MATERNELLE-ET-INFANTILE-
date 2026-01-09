@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mot de passe réinitialisé</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+    <!--  Redirection automatique après 3 secondes -->
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ url_for('login') }}";
+        }, 3000);
+    </script>
+</head>
+
+<body>
+
+    <!-- ======== NAVBAR ======== -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="{{ url_for('static', filename='image.png') }}" alt="Logo" class="logo">
+            <h2>Chatbot Santé</h2>
+        </div>
+    </nav>
+
+    <!-- ======== CONTENEUR ======== -->
+    <div class="login-container">
+        <img src="{{ url_for('static', filename='login.png') }}" class="login-logo">
+
+        <h2 style="margin-bottom: 10px;">Mot de passe mis à jour</h2>
+
+        <p style="font-size: 1.1em; color:#444;">
+            Votre mot de passe a été réinitialisé avec succès.<br>
+            Un email de confirmation a été envoyé à :
+            <br><strong>{{ email }}</strong>
+        </p>
+
+        <p style="margin-top: 20px; color:#666;">
+            Redirection vers la page de connexion...
+        </p>
+
+        <a href="{{ url_for('login') }}" 
+           style="display:inline-block;margin-top:20px;padding:10px 20px;background:#86a391;color:white;border-radius:5px;text-decoration:none;">
+           Accéder à la connexion
+        </a>
+    </div>
+
+</body>
+</html>
+

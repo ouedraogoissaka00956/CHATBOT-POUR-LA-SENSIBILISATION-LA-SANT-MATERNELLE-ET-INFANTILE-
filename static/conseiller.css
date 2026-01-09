@@ -1,0 +1,606 @@
+:root {
+    --vert-principal: #86a391;
+    --vert-clair: #a9bfae;
+    --beige-fond: #f7f5f2;
+    --gris-text: #444;
+    --blanc: #ffffff;
+}
+
+/* BODY */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--beige-fond);
+    margin: 0;
+    padding: 0;
+    color: var(--gris-text);
+}
+
+/* ===== SIDEBAR (MENU VERTICAL) ===== */
+.sidebar {
+    width: 230px;
+    background: var(--vert-principal);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 3px 0 8px rgba(0,0,0,0.1);
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    display: block;
+    font-size: 1.1em;
+    transition: background 0.2s;
+}
+
+.sidebar a:hover {
+    background: var(--vert-clair);
+}
+
+.sidebar a.active {
+    background: var(--vert-clair);
+    font-weight: bold;
+}
+
+/* CONTENT WITH SIDEBAR */
+.page-content {
+    margin-left: 250px;
+    padding: 40px;
+}
+
+/* CONSULTATION CARD */
+.consult-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.consult-card h3 {
+    margin-top: 0;
+    color: var(--vert-principal);
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 7px;
+    font-size: 0.9em;
+    color: white;
+}
+
+.en_attente { background: #f0ad4e; }
+.approuvee { background: #5cb85c; }
+.rejettee  { background: #d9534f; }
+
+.open-btn {
+    padding: 9px 15px;
+    background: var(--vert-principal);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.open-btn:hover {
+    opacity: 0.8;
+}
+
+
+/* ===== PHOTO PROFIL CONSEILLER ===== */
+
+.sidebar-profile {
+    text-align: center;
+    padding: 25px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 10px;
+}
+
+.sidebar-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 90%;
+    object-fit: cover;
+    border: 3px solid #ffffff55;
+    margin-bottom: 20px;
+}
+
+
+.sidebar-profile h2 {
+    color: white;
+    margin-top: 10px;
+    font-size: 19px;
+}
+
+.sidebar-profile .role {
+    color: #cfe8ff;
+    font-size: 14px;
+    margin-top: -5px;
+}
+
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--vert-principal);
+    color: var(--blanc);
+    padding: 15px 30px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 10%;
+}
+
+.nav-left h2 {
+    margin: 0;
+}
+
+.nav-right a {
+    color: white;
+    margin-left: 20px;
+    padding: 10px 20px;
+    background: var(--vert-clair);
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.nav-right a:hover {
+    background: transparent;
+    border: 2px solid white;
+}
+
+/* DASHBOARD */
+.dashboard-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.dashboard-container h1 {
+    text-align: center;
+    color: var(--vert-principal);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.stat-card {
+    background: var(--blanc);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    color: var(--gris-text);
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h3 {
+    color: var(--vert-principal);
+    margin-bottom: 10px;
+}
+
+/* TABLE PATIENTS */
+.table-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: var(--vert-principal);
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--vert-clair);
+}
+
+/* PROFILE PAGE */
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.profile-container p {
+    font-size: 1.1em;
+}
+
+.edit-btn {
+    padding: 12px 22px;
+    background: var(--vert-principal);
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 25px;
+}
+
+/* EDIT FORM */
+.profile-edit-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.profile-edit-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-edit-container input[type="text"],
+.profile-edit-container input[type="email"],
+.profile-edit-container input[type="file"] {
+    padding: 12px;
+    border: 2px solid var(--vert-clair);
+    border-radius: 10px;
+}
+
+.profile-edit-container button {
+    padding: 12px;
+    background: var(--vert-principal);
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.profile-edit-container button:hover {
+    opacity: 0.9;
+}
+
+.success {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+}
+/* BOUTON CHAT DANS CONSULTATIONS */
+.chat-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    background: #4da6ff;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.chat-btn:hover {
+    background: #1e90ff;
+}
+
+
+.section-title {
+    margin-top: 40px;
+    color: #4a6a8a;
+    border-left: 5px solid #4a6a8a;
+    padding-left: 10px;
+    font-size: 1.4em;
+}
+
+.approve-btn {
+    background: #48c774;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.reject-btn {
+    background: #ff3860;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.chat-btn {
+    display: block;
+    margin-top: 10px;
+    background: #3273dc;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.chat-btn:hover {
+    background: #2756a8;
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.popup-box input[type="time"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.popup-validate {
+    background: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.popup-cancel {
+    background: #444;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-left: 10px;
+}
+/* ===== CONNEXION / RÉINITIALISATION MOT DE PASSE ===== */
+
+/* ===== FICHE PATIENT ===== */
+
+.patient-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 18px;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-left: 6px solid var(--vert-principal);
+}
+
+.patient-card h2 {
+    text-align: center;
+    font-size: 1.8em;
+    color: var(--vert-principal);
+    margin-bottom: 10px;
+}
+
+.patient-card h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.info-section {
+    background: #f7f5f2;
+    padding: 18px;
+    border-radius: 12px;
+    margin-top: 20px;
+    border: 1px solid #e5e3df;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+}
+
+.info-section h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.3em;
+    color: var(--vert-principal);
+    border-left: 4px solid var(--vert-principal);
+    padding-left: 10px;
+}
+
+.info-section p {
+    margin: 7px 0;
+    font-size: 1.05em;
+    color: #444;
+}
+
+.info-section strong {
+    color: #333;
+}
+
+
+/* ===== BOUTON RETOUR ===== */
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 25px;
+    background: var(--vert-principal);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.back-btn:hover {
+    background: var(--vert-clair);
+    color: #333;
+}
+
+
+/* ===== ALIGNEMENT PAGE ===== */
+.page-content h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--vert-principal);
+}
+
+
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 768px) {
+    .patient-card {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .info-section {
+        padding: 15px;
+    }
+
+    .back-btn {
+        width: 100%;
+        text-align: center;
+    }
+} 
+
+/* ===== PHOTO PATIENTE ===== */
+.patient-photo-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.patient-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--vert-principal);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+/* ===== ACTIONS ===== */
+.fiche-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pdf-btn {
+    background: #4a6fa5;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.pdf-btn:hover {
+    background: #385882;
+}
+
+/* (Le reste vient du CSS déjà généré) */
+
+.alerts-box {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+}
+
+.alert-card {
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.alert-card.consultation {
+    background: #e3ffe3;
+    border-left: 5px solid #4caf50;
+}
+
+.alert-card.message {
+    background: #e8f0ff;
+    border-left: 5px solid #3a6bcc;
+}
+
+.alert-card.rappel {
+    background: #fff4d9;
+    border-left: 5px solid #ffa726;
+}
+
+.alert-card.conseil {
+    background: #fbe3ff;
+    border-left: 5px solid #ba3acd;
+}
+
+.no-alert {
+    color: #777;
+    text-align: center;
+    padding: 10px;
+}

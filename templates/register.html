@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription - Chatbot Santé</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+<body>
+
+  <!-- ===== MENU ===== -->
+  <nav class="navbar">
+      <div class="nav-left">
+          <img src="{{ url_for('static', filename='image.png') }}" alt="Logo" class="logo">
+          <h2>Chatbot Santé</h2>
+      </div>
+      <div class="nav-right">
+          <a href="{{ url_for('home') }}" class="active">Accueil</a>
+      </div>
+  </nav>
+
+  <div class="register-container">
+
+    <!-- Logo centré -->
+    <img src="{{ url_for('static', filename='register.png') }}" alt="Logo Chatbot" class="login-logo">
+
+    <h2>Créer un compte</h2>
+
+    <p style="color:red;">{{ message }}</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+      <!-- ========= INFOS DE BASE ========= -->
+      <h3>Informations personnelles</h3>
+
+      <input type="text" name="nom" placeholder="Nom" required>
+      <input type="text" name="prenom" placeholder="Prénom" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+
+
+      <!-- ========= PHOTO ========= -->
+      <h3>Photo de profil (facultatif)</h3>
+      <input type="file" name="photo" accept="image/*">
+
+      <!-- ========= DONNÉES MÉDICALES ========= -->
+      <h3>Informations médicales</h3>
+
+      <label>Date de naissance :</label>
+      <input type="date" name="dob" required>
+
+      <!-- Semaine de grossesse -->
+      <label>Semaine de grossesse (1 à 40)</label>
+      <input type="number" name="pregnancy_week" min="0" max="40" required>
+
+      <label>Nombre d’enfants :</label>
+      <input type="number" name="num_children" min="0">
+
+      <label>Allergies :</label>
+      <textarea name="allergies"></textarea>
+
+      <label>Médicaments actuels :</label>
+      <textarea name="current_medications"></textarea>
+
+      <label>Groupe sanguin :</label>
+      <select name="blood_type" required>
+         <option value="">-- Sélectionnez --</option>
+         <option value="A+">A+</option>
+         <option value="A-">A-</option>
+         <option value="B+">B+</option>
+         <option value="B-">B-</option>
+         <option value="AB+">AB+</option>
+         <option value="AB-">AB-</option>
+         <option value="O+">O+</option>
+         <option value="O-">O-</option>
+      </select>
+
+
+      <h3>Contact d'urgence</h3>
+      <input type="text" name="emergency_name" placeholder="Nom du contact">
+      <input type="text" name="emergency_phone" placeholder="Téléphone">
+
+      <button type="submit">S'inscrire</button>
+    </form>
+
+    <p>Déjà un compte ? <a href="{{ url_for('login') }}">Se connecter</a></p>
+
+  </div>
+
+</body>
+</html>

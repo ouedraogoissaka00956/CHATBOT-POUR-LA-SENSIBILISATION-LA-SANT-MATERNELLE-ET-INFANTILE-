@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier profil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='image.png') }}" class="logo">
+        <h2>Modifier Profil</h2>
+    </div>
+
+    <div class="nav-right">
+        <a href="{{ url_for('conseiller_profile') }}">Retour</a>
+    </div>
+</nav>
+
+<div class="profile-edit-container">
+
+   <img src="{% if user.photo %}
+                    {{ url_for('static', filename='uploads/' + user.photo) }}
+            {% else %}
+                    {{ url_for('static', filename='uploads/defaut.png') }}
+            {% endif %}"
+             alt="Photo conseiller" class="profile-photo">
+
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <label>Photo de profil :</label>
+        <input type="file" name="photo">
+
+        <label>Nom :</label>
+        <input type="text" name="nom" value="{{ user.nom }}" required>
+
+        <label>Prénom :</label>
+        <input type="text" name="prenom" value="{{ user.prenom }}" required>
+
+        <label>Email :</label>
+        <input type="email" name="email" value="{{ user.email }}" required>
+
+        <button type="submit">enregister</button>
+    </form>
+
+    {% if message %}
+    <p class="success">{{ message }}</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

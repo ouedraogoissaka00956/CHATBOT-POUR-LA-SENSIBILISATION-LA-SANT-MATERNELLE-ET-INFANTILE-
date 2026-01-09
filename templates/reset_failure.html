@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Lien expiré</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+    <script>
+        // Redirection automatique dans 3 secondes
+        setTimeout(function(){
+            window.location.href = "{{ url_for('forgot_password') }}";
+        }, 3000);
+    </script>
+</head>
+
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="{{ url_for('static', filename='image.png') }}" class="logo">
+            <h2>Chatbot Santé</h2>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <h2>Mot de passe mis à jour</h2>
+
+        <p style="font-size:1.1em; margin-bottom:20px;color:red;">
+             Ce lien a expiré. Veuillez refaire la demande.<br>
+        </p>
+
+        <p style="color:#666;">Redirection vers la page de mot de passe oublié...</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des consultations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <h2>Conseiller</h2>
+    
+
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_patients') }}"> Patientes</a>
+    <a href="{{ url_for('manage_consultations') }}" class="active"> Consultations</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
+</div>
+
+<!-- ===== CONTENU ===== -->
+<div class="page-content">
+
+    <h1>Liste des consultations</h1>
+
+    <h2 class="section-title"> En attente</h2>
+    {% for c in consultations_attente %}
+        <div class="consult-card">
+            <h3>{{ c.patient }}</h3>
+            <p><strong>Motif :</strong> {{ c.motif }}</p>
+            <p><strong>Date :</strong> {{ c.date }}</p>
+            <form method="POST">
+                <input type="hidden" name="consult_id" value="{{ c._id }}">
+                <button class="approve-btn" name="action" value="approve">✔ Approuver</button>
+                <button class="reject-btn" name="action" value="reject">✖ Rejeter</button>
+            </form>
+        </div>
+    {% endfor %}
+
+    <h2 class="section-title">✔ Approuvées</h2>
+    {% for c in consultations_ok %}
+        <div class="consult-card">
+            <h3>{{ c.patient }}</h3>
+            <p><strong>Motif :</strong> {{ c.motif }}</p>
+            <p><strong>Date :</strong> {{ c.date }} à {{ c.heure }}</p>
+        </div>
+    {% endfor %}
+
+    <h2 class="section-title">❌ Rejetées</h2>
+    {% for c in consultations_rejet %}
+        <div class="consult-card rejection">
+            <h3>{{ c.patient }}</h3>
+            <p><strong>Motif :</strong> {{ c.motif }}</p>
+            <p><strong>Date :</strong> {{ c.date }}</p>
+            <span class="status-badge rejettee">Rejetée</span>
+        </div>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

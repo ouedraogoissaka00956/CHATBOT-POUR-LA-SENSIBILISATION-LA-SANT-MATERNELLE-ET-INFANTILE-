@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes consultations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+
+    <div class="sidebar-profile">
+        <img src="{% if user.photo %}
+                    {{ url_for('static', filename='uploads/' + user.photo) }}
+            {% else %}
+                    {{ url_for('static', filename='uploads/defaut.png') }}
+            {% endif %}"
+             alt="Photo conseiller" class="profile-photo">
+        <h2>{{ user.prenom }} {{ user.nom }}</h2>
+        <p class="role">Conseiller</p>
+    </div>
+
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_consultations') }}"> Liste des consultations</a>
+    <a href="{{ url_for('conseiller_discussions') }}"> Discussions</a>
+    <a href="{{ url_for('conseiller_patients') }}"> Patientes</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
+</div>
+
+
+<!-- ===== CONTENU ===== -->
+<div class="page-content">
+
+    <h1>Liste des consultations</h1>
+
+    <h2 class="section-title"> En attente</h2>
+    {% for c in consultations_attente %}
+        <div class="consult-card">
+            <h3>{{ c.patient }}</h3>
+            <p><strong>Motif :</strong> {{ c.motif }}</p>
+            <p><strong>Date :</strong> {{ c.date }}</p>
+            <form method="POST" action="">
+                <input type="hidden" name="consult_id" value="{{ c._id }}">
+                <button class="approve-btn" type="button" onclick="openPopup('{{ c._id }}')">
+                    ✔ Approuver
+                </button>
+                <button class="reject-btn" name="action" value="reject">✖ Rejeter</button>
+            </form>
+
+        </div>
+    {% endfor %}
+
+    <h2 class="section-title"> Approuvées</h2>
+    {% for c in consultations_ok %}
+        <div class="consult-card">
+            <h3>{{ c.patient }}</h3>
+            <p><strong>Motif :</strong> {{ c.motif }}</p>
+            <p><strong>Date :</strong> {{ c.date }} à {{ c.heure }}</p>
+        </div>
+    {% endfor %}
+
+    <h2 class="section-title"> Rejetées</h2>
+    {% for c in consultations_rejet %}
+        <div class="consult-card rejection">
+            <h3>{{ c.patient }}</h3>
+            <p><strong>Motif :</strong> {{ c.motif }}</p>
+            <p><strong>Date :</strong> {{ c.date }}</p>
+            <span class="status-badge rejettee">Rejetée</span>
+        </div>
+    {% endfor %}
+
+</div>
+
+<!-- ===== POPUP POUR CHOISIR L’HEURE ===== -->
+<div id="popup-hour" class="popup hidden">
+    <div class="popup-box">
+        <h3>Définir l’heure de la consultation</h3>
+
+        <form id="popup-form" method="POST">
+            <input type="hidden" name="consult_id" id="popup-consult-id">
+            <input type="hidden" name="action" value="approve">
+
+            <label>Heure :</label>
+            <input type="time" name="heure" required>
+
+            <button type="submit" class="popup-validate">Confirmer</button>
+            <button type="button" class="popup-cancel" onclick="closePopup()">Annuler</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function openPopup(consultId) {
+    document.getElementById("popup-consult-id").value = consultId;
+    document.getElementById("popup-hour").classList.remove("hidden");
+}
+
+function closePopup() {
+    document.getElementById("popup-hour").classList.add("hidden");
+}
+</script>
+
+</body>
+</html>

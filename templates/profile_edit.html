@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier mon profil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='femme.png') }}" class="logo">
+        <h2>Modifier le Profil</h2>
+    </div>
+
+    <div class="nav-right">
+        <a href="{{ url_for('profile') }}">Retour</a>
+        <a href="{{ url_for('logout') }}" class="logout">Déconnexion</a>
+    </div>
+</nav>
+
+<div class="profile-wrapper">
+
+    <h2 class="title">Modifier mes informations</h2>
+
+    <p class="msg">{{ message }}</p>
+
+    <!-- Changer la Photo -->
+    <div class="profile-photo">
+        <img src="{{ photo_url }}" class="photo">
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="photo" accept="image/*">
+            <button type="submit" name="update_photo" class="btn">Changer la photo</button>
+        </form>
+    </div>
+
+    <!-- Modifier les infos -->
+    <form method="POST" class="profile-form">
+
+        <h3>Informations médicales</h3>
+
+        <label>Date de naissance :</label>
+        <input type="date" name="dob" value="{{ profile.dob }}">
+           
+        <label>Semaine de grossesse :</label>
+        <input type="number" name="pregnancy_week" min="0" max="40" 
+               value="{{ profile.pregnancy_week }}">
+
+        <label>Nombre d’enfants :</label>
+        <input type="number" name="num_children" value="{{ profile.num_children }}">
+
+        <label>Allergies :</label>
+        <textarea name="allergies">{{ profile.allergies }}</textarea>
+
+        <label>Médicaments actuels :</label>
+        <textarea name="current_medications">{{ profile.current_medications }}</textarea>
+
+        <select name="blood_type" required>
+            <option value="">-- Choisir --</option>
+            {% for bt in ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"] %}
+                <option value="{{ bt }}" {% if profile.blood_type == bt %}selected{% endif %}>{{ bt }}</option>
+            {% endfor %}
+        </select>
+
+
+        <h3>Contact d'urgence</h3>
+        <label>Nom :</label>
+        <input type="text" name="emergency_name" value="{{ profile.emergency_contact.name }}">
+
+        <label>Téléphone :</label>
+        <input type="text" name="emergency_phone" value="{{ profile.emergency_contact.phone }}">
+
+        <button type="submit" name="update_profile" class="btn save-btn">Enregistrer</button>
+    </form>
+
+</div>
+
+</body>
+</html>

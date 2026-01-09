@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='femme.png') }}" class="logo">
+        <h2>Chatbot Santé Maternité</h2>
+    </div>
+
+    <div class="nav-right">
+        <span class="welcome">{{ user.prenom }} {{ user.nom }}</span>
+        <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" class="profile-small">
+        <a href="{{ url_for('index') }}">Chatbot</a>
+        <a href="{{ url_for('logout') }}" class="logout">Déconnexion</a>
+    </div>
+</nav>
+
+<div class="profile-wrapper">
+    
+    <h2 class="title">Mon Profil</h2>
+
+    <div class="profile-photo">
+        <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" class="photo">
+    </div>
+
+    <table class="info-table">
+        <tr><th>Nom</th><td>{{ user.nom }}</td></tr>
+        <tr><th>Prénom</th><td>{{ user.prenom }}</td></tr>
+        <tr><th>Date de naissance</th><td>{{ profile.dob }}</td></tr>
+
+        <tr><th>Semaine de grossesse</th>
+            <td>
+                {% if pregnancy_week %}
+                    {{ pregnancy_week }} semaines
+                {% else %}
+                    Non renseigné
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr><th>Date supposée d'accouchement</th>
+            <td>
+                {% if profile.expected_due %}
+                    {{ profile.expected_due }}
+                {% else %}
+                    Non calculée
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr><th>Nombre d’enfants</th><td>{{ profile.num_children }}</td></tr>
+        <tr><th>Allergies</th><td>{{ profile.allergies }}</td></tr>
+        <tr><th>Médicaments actuels</th><td>{{ profile.current_medications }}</td></tr>
+
+        <tr><th>Groupe sanguin</th><td>{{ profile.blood_type }}</td></tr>
+
+        <tr><th>Contact d'urgence</th>
+            <td>{{ emergency.name }} ({{ emergency.phone }})</td>
+        </tr>
+    </table>
+
+    <div class="btn-center">
+        <a href="{{ url_for('profile_edit') }}" class="btn">Modifier mon profil</a>
+    </div>
+
+</div>
+
+</body>
+</html>

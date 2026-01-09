@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fiche patiente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+
+    <div class="sidebar-profile">
+        <img src="{% if user.photo %}{{ url_for('static', filename='uploads/' + user.photo) }}
+                 {% else %}{{ url_for('static', filename='uploads/defaut.png') }}{% endif %}"
+             alt="Photo conseiller" class="profile-photo">
+
+        <h2>{{ user.prenom }} {{ user.nom }}</h2>
+        <p class="role">Conseiller</p>
+    </div>
+
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_patients') }}" class="active"> Patientes</a>
+    <a href="{{ url_for('conseiller_consultations') }}"> Consultations</a>
+    <a href="{{ url_for('conseiller_discussions') }}"> Discussions</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
+</div>
+
+
+<!-- ===== CONTENU ===== -->
+<div class="page-content">
+
+    <h1>Fiche de la patiente</h1>
+
+    <div class="patient-card">
+        {% if pdf_mode %}
+        <div class="pdf-wrapper">
+        {% endif %}
+
+
+        <!-- Photo patiente -->
+        <div class="patient-photo-wrapper">
+            <img src="{% if patiente.photo %}{{ url_for('static', filename='uploads/' + patiente.photo) }}
+                     {% else %}{{ url_for('static', filename='uploads/defaut.png') }}{% endif %}"
+                 alt="Photo patiente" class="patient-photo">
+        </div>
+
+        <h2>{{ patiente.prenom }} {{ patiente.nom }}</h2>
+
+        {% set p = patiente.profile %}
+
+        <div class="info-section">
+            <h3>Informations générales</h3>
+            <p><strong>Date de naissance :</strong> {{ p.dob }}</p>
+            <p><strong>Nombre d’enfants :</strong> {{ p.num_children }}</p>
+        </div>
+
+        <div class="info-section">
+            <h3>Grossesse</h3>
+            <p><strong>Semaine de grossesse :</strong> {{ p.pregnancy_week }}</p>
+            <p><strong>Date prévue d'accouchement :</strong> {{ p.expected_due }}</p>
+        </div>
+
+        <div class="info-section">
+            <h3>Antécédents & Allergies</h3>
+            <p><strong>Allergies :</strong> {{ p.allergies }}</p>
+            <p><strong>Antécédents :</strong> {{ p.chronic_conditions }}</p>
+        </div>
+
+        <div class="info-section">
+            <h3>Médications actuelles</h3>
+            <p>{{ p.current_medications }}</p>
+        </div>
+
+        <div class="info-section">
+            <h3>Informations médicales</h3>
+            <p><strong>Groupe sanguin :</strong> {{ p.blood_type }}</p>
+        </div>
+
+        <div class="info-section">
+            <h3>Contact d'urgence</h3>
+            {% if p.emergency_contact %}
+                <p><strong>Nom :</strong> {{ p.emergency_contact.name }}</p>
+                <p><strong>Téléphone :</strong> {{ p.emergency_contact.phone }}</p>
+            {% else %}
+                <p>Aucun contact d'urgence renseigné.</p>
+            {% endif %}
+        </div>
+
+        <div class="fiche-actions">
+            <a href="{{ url_for('conseiller_patients') }}" class="back-btn"> Retour</a>
+
+            <a href="{{ url_for('patient_fiche_pdf', username=patiente.username) }}"
+               class="pdf-btn" target="_blank">
+                 Exporter en PDF
+            </a>
+        </div>
+
+       {% if pdf_mode %}
+        </div>
+        {% endif %}
+ 
+    </div>
+
+</div>
+
+</body>
+</html>

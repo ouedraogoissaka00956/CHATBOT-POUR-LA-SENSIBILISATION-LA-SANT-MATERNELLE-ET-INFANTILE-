@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord - Conseiller</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='image.png') }}" class="logo">
+        <h2>Conseiller - Tableau de bord</h2>
+    </div>
+
+    <div class="nav-right">
+        <a href="{{ url_for('logout') }}">Déconnexion</a>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+
+    <h1>Bienvenue {{ username }}</h1>
+
+    <div class="stats-grid">
+
+        <a href="{{ url_for('conseiller_patients') }}" class="stat-card">
+            <h3> Patientes</h3>
+            <p>{{ total_patients }}</p>
+        </a>
+
+       <a href="{{ url_for('conseiller_consultations') }}" class="stat-card">
+            <h3> Consultations</h3>
+            <p>{{ total_consultations }}</p>    
+       </a>
+
+        <a href="{{ url_for('conseiller_profile') }}" class="stat-card">
+            <h3> Mon profil</h3>
+            <p>Voir / Modifier</p>
+        </a>
+
+    </div>
+
+</div>
+<div class="alerts-box">
+    {% for a in alerts %}
+        <div class="alert-card {{ a.type }}">
+            <p>{{ a.content }}</p>
+            <span class="date">{{ a.timestamp.strftime('%d/%m %H:%M') }}</span>
+        </div>
+    {% endfor %}
+
+    {% if alerts|length == 0 %}
+        <p class="no-alert">Aucune alerte pour le moment </p>
+    {% endif %}
+</div>
+
+
+</body>
+</html>

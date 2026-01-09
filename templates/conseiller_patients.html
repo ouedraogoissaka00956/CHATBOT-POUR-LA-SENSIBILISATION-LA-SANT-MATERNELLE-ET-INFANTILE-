@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes patientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='image.png') }}" class="logo">
+        <h2>Liste des Patientes</h2>
+    </div>
+
+    <div class="nav-right">
+        <a href="{{ url_for('conseiller_consultations') }}">Retour</a>
+    </div>
+</nav>
+
+<div class="table-container">
+
+    <table>
+        <tr>
+            <th>Photo</th>
+            <th>Nom complet</th>
+            <th>Email</th>
+        </tr>
+
+        {% for p in patients %}
+        <tr>
+            <td>
+                <img src="{{ url_for('static', filename='uploads/' + p.photo) }}" width="60" class="profile-photo-small">
+            </td>
+            <td>{{ p.nom }} {{ p.prenom }}</td>
+            <td>{{ p.email }}</td>
+            <td>
+                <a class="open-btn" href="{{ url_for('fiche_patient', username=p.username) }}">
+                   Voir la fiche médicale
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>

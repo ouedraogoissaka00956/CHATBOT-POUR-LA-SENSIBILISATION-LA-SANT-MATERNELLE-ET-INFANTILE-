@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Consultation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2> Modifier la consultation</h2>
+    <form method="POST">
+        <label>Patiente :</label>
+        <select name="patient" required>
+            {% for p in patients %}
+            <option value="{{ p.username }}" {% if consultation.patient == p.username %}selected{% endif %}>
+                {{ p.prenom }} {{ p.nom }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <input type="date" name="date" value="{{ consultation.date }}" required>
+        <input type="text" name="motif" value="{{ consultation.motif }}" required>
+        <textarea name="compte_rendu" rows="4">{{ consultation.compte_rendu }}</textarea>
+
+        <button type="submit"> Enregistrer</button>
+    </form>
+</div>
+</body>
+</html>

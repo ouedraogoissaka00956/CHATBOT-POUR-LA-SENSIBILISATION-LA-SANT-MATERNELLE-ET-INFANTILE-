@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='menu.css') }}">
+    <title>Menu</title>
+</head>
+<body>
+ <nav class="admin-navbar">
+    <h2> Administration</h2>
+    <ul>
+        <li><a href="/admin"> Tableau de bord</a></li>
+        <li><a href="/admin/list_patients"> Liste des patients</a></li>
+        <li><a href="/admin/list_conseillers"> Liste des conseillers</a></li>
+        <li><a href="/admin/add_conseiller"> Ajouter un conseiller</a></li>
+        <li><a href="/admin/consultations"> Consultations</a></li>
+        <li><a href="/admin/reminders"> Rappels</a></li>
+        <li><a href="/admin/email_logs"> Historique des Emails</a></li>
+        <li><a href="/logout"> Déconnexion</a></li>
+    </ul>
+</nav>
+
+
+</body>
+</html>

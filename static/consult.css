@@ -1,0 +1,77 @@
+/* ==============================
+   CONTENU AVEC MENU ADMIN
+   ============================== */
+
+.title {
+    margin-left: 270px; /* pour éviter que le titre soit sous le menu */
+    margin-top: 30px;
+    font-size: 26px;
+    color: var(--vert-principal);
+    text-align: center;
+}
+
+/* ===== TABLE ===== */
+
+.table {
+    width: calc(100% - 300px);
+    margin-left: 270px;  /* aligné avec le menu */
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: var(--blanc);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.table thead {
+    background: var(--vert-principal);
+    color: var(--blanc);
+}
+
+.table th, 
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+.table tbody tr:hover {
+    background: #f5f5f5;
+    transition: 0.3s;
+}
+
+/* Statut */
+.table td.status {
+    font-weight: bold;
+}
+
+.table td.status.en_attente {
+    color: orange;
+}
+
+.table td.status.approuvee {
+    color: green;
+}
+
+.table td.status.rejettee {
+    color: red;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+    .table,
+    .title {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+
+    .table th, .table td {
+        padding: 8px;
+    }
+}

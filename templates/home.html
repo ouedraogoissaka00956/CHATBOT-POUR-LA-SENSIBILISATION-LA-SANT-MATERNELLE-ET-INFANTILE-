@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Chatbot Santé</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <!-- ====== MENU DE NAVIGATION ====== -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="{{ url_for('static', filename='image.png') }}" alt="Logo" class="logo">
+            <h2>Chatbot Santé</h2>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('home') }}" class="active">Accueil</a>
+            <a href="{{ url_for('login') }}" class="btn btn-login">Connexion</a>
+            <a href="{{ url_for('register') }}" class="btn btn-register">Inscription</a>
+        </div>
+    </nav>
+
+    <!-- ====== CONTENU PRINCIPAL ====== -->
+    <div class="home-container">
+        <header>
+            <h1>Bienvenue sur <span>Chatbot Santé</span></h1>
+            <img src="{{ url_for('static', filename='bienvenu.png') }}" alt="Logo" class="logo1">
+            <p>Votre compagnon intelligent pour la santé maternelle et infantile</p>
+        </header>
+
+        <main>
+            <p class="intro">
+                Chatbot Santé est une plateforme a pour but de sensibiliser et d'informer les femmes enceintes et les jeunes mères sur les bonnes pratiques de santé maternelle et infantile. Il peut répondre à des questions sur la grossesse, les soins prénatals, la nutrition des enfants, et rappeler aux utilisateurs les dates de vaccination. 
+            </p>
+        </main>
+
+        <footer>
+            <p>••••••••• 2025 Chatbot Santé •••• Tous droits réservés •••• Developpé par : Issaka Ouedraogo •••••••••</p>
+        </footer>
+    </div>
+</body>
+</html>

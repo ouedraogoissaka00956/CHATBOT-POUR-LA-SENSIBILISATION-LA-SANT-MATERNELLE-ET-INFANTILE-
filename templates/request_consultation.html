@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande de consultation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='request.css') }}">
+</head>
+<body>
+
+    <!-- ===== NAVBAR RETOUR ===== -->
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="back-btn"> Retour</a>
+        <span class="title">Demande de consultation</span>
+    </nav>
+
+    <!-- ===== CONTENU ===== -->
+    <div class="center">
+        <form method="POST" class="form-box">
+            <h2>Demande de consultation</h2>
+            <p>{{ message }}</p>
+
+            <label>Choisissez un conseiller :</label>
+            <select name="conseiller" required>
+                {% for c in conseillers %}
+                <option value="{{ c.username }}">{{ c.nom }} {{ c.prenom }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Date de la consultation :</label>
+            <input type="date" name="date" required>
+
+            <label>Motif :</label>
+            <input type="text" name="motif" required>
+
+            <label>Message :</label>
+            <textarea name="message" rows="3"></textarea>
+
+            <button type="submit">Envoyer la demande</button>
+        </form>
+    </div>
+
+</body>
+</html>

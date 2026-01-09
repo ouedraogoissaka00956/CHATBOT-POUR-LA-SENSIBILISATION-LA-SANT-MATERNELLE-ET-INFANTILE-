@@ -1,0 +1,79 @@
+/* ============================
+   PAGE RAPPELS — ADMIN
+   ============================ */
+
+.title {
+    margin-left: 270px;
+    margin-top: 30px;
+    font-size: 26px;
+    color: var(--vert-principal);
+    text-align: center;
+}
+
+/* ===== TABLE ===== */
+
+.table {
+    width: calc(100% - 300px);
+    margin-left: 270px;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: var(--blanc);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+}
+
+.table thead {
+    background: var(--vert-principal);
+    color: var(--blanc);
+}
+
+.table th, 
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+/* Hover row */
+.table tbody tr:hover {
+    background: #f4f4f4;
+    transition: 0.25s;
+}
+
+/* Delete button */
+.btn-delete {
+    background: var(--rouge);
+    color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.btn-delete:hover {
+    background: #a5281e;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+    .title,
+    .table {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .btn-delete {
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+}

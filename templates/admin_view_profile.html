@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Profil utilisateur — admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+  <style>
+    .view-container {
+      max-width:800px; margin:40px auto; background:var(--blanc); padding:20px; border-radius:10px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    }
+    .field { margin-bottom:10px; }
+    .label { font-weight:600; color:var(--vert-principal); }
+  </style>
+</head>
+<body>
+  {% include 'admin_menu.html' %}
+  <div class="view-container">
+    <h2>Profil de {{ user.get('nom','') }} {{ user.get('prenom','') }} ({{ user.get('username') }})</h2>
+
+    <div class="field"><span class="label">Rôle :</span> {{ user.get('role') }}</div>
+
+    {% set p = user.get('profile', {}) %}
+    <div class="field"><span class="label">Date de naissance :</span> {{ p.get('dob','-') }}</div>
+    <div class="field"><span class="label">Début grossesse :</span> {{ p.get('pregnancy_start','-') }}</div>
+    <div class="field"><span class="label">Date prévue d'accouchement :</span> {{ p.get('expected_due','-') }}</div>
+    <div class="field"><span class="label">Nombre d'enfants :</span> {{ p.get('num_children','-') }}</div>
+    <div class="field"><span class="label">Allergies :</span> {{ p.get('allergies','-') }}</div>
+    <div class="field"><span class="label">Pathologies chroniques :</span> {{ p.get('chronic_conditions','-') }}</div>
+    <div class="field"><span class="label">Médicaments :</span> {{ p.get('current_medications','-') }}</div>
+    <div class="field"><span class="label">Groupe sanguin :</span> {{ p.get('blood_type','-') }}</div>
+    <div class="field"><span class="label">Contact urgence :</span> {{ p.get('emergency_contact', {}).get('name','-') }} — {{ p.get('emergency_contact', {}).get('phone','-') }}</div>
+
+    <div style="margin-top:12px">
+      <a href="{{ url_for('admin') }}" class="edit-btn">← Retour admin</a>
+      <a href="{{ url_for('admin_edit_user', user_id=user.get('_id')) }}" class="edit-btn">Modifier utilisateur</a>
+    </div>
+  </div>
+</body>
+</html>

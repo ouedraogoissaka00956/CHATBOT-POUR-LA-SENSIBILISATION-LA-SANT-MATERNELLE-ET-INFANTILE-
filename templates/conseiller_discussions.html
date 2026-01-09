@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Discussions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='conseiller.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="sidebar-profile">
+        <img src="{% if user.photo %}
+                    {{ url_for('static', filename='uploads/' + user.photo) }}
+            {% else %}
+                    {{ url_for('static', filename='uploads/defaut.png') }}
+            {% endif %}"
+             alt="Photo conseiller" class="profile-photo">
+        <h2>{{ user.prenom }} {{ user.nom }}</h2>
+        <p class="role">Conseiller</p>
+    </div>
+
+    <a href="{{ url_for('conseiller_dashboard') }}"> Tableau de bord</a>
+    <a href="{{ url_for('conseiller_consultations') }}"> Liste des consultations</a>
+    <a href="{{ url_for('conseiller_discussions') }}"> Discussions</a>
+    <a href="{{ url_for('conseiller_patients') }}"> Patientes</a>
+    <a href="{{ url_for('conseiller_profile') }}"> Mon Profil</a>
+    <a href="{{ url_for('logout') }}"> Déconnexion</a>
+</div>
+<!-- ===== CONTENU ===== -->
+
+<div class="page-content">
+
+    <h1>Discussions</h1>
+
+    {% if consultations_ok|length == 0 %}
+        <p>Aucune consultation approuvée pour le moment.</p>
+    {% endif %}
+
+    {% for c in consultations_ok %}
+        <div class="consult-card">
+            <h3>Patient : {{ c.patient }}</h3>
+            <p><strong>Motif :</strong> {{ c.motif }}</p>
+            <p><strong>Date :</strong> {{ c.date }} à {{ c.heure }}</p>
+
+            <a class="chat-btn" href="{{ url_for('chat_patient', patient=c.patient) }}">
+                 Discuter
+            </a>
+        </div>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
