@@ -2222,6 +2222,6 @@ scheduler.start()
 if __name__ == '__main__':
     # Thread pour activer l'envoi automatique d'emails
     Thread(target=check_reminders, daemon=True).start()
-     port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
 
