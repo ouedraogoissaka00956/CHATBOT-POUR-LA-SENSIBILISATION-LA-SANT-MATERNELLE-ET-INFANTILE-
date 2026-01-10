@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+env/
+*.h5
+*.pkl
+static/uploads/*
+!static/uploads/.gitkeep

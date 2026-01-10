@@ -2208,19 +2208,49 @@ def send_weekly_pregnancy_tips():
             }
         )
 
-# Lancer le scheduler
+# Scheduler pour envoi hebdomadaire
 scheduler = BackgroundScheduler()
-scheduler.add_job(send_weekly_pregnancy_tips, "interval", days=1)  # vérifie chaque jour
+scheduler.add_job(send_weekly_pregnancy_tips, 'interval', weeks=1, next_run_time=datetime.now())
 scheduler.start()
+ 
+
+
+def shutdown_scheduler():
+    """Arrête proprement le scheduler lors de l'arrêt de l'application"""
+    try:
+        scheduler.shutdown()
+        print("✓ Scheduler arrêté proprement")
+    except Exception as e:
+        print(f"⚠ Erreur arrêt scheduler: {e}")
+
+# Enregistrer la fonction d'arrêt
+atexit.register(shutdown_scheduler)
+
+# Gérer les signaux SIGTERM et SIGINT
+def signal_handler(sig, frame):
+    print("⚠ Signal reçu, arrêt de l'application...")
+    shutdown_scheduler()
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, signal_handler)
+signal.signal(signal.SIGINT, signal_handler)
 
 
 
-
-# ============================================================
-#  LANCEMENT DE L’APPLICATION
+#============================================================
+#  LANCEMENT DE L'APPLICATION
 # ============================================================
 if __name__ == '__main__':
     # Thread pour activer l'envoi automatique d'emails
     Thread(target=check_reminders, daemon=True).start()
-    port = int(os.getenv('PORT', 5000))
+ 
+ 
+    # Commenter ou supprimer ces lignes en production :
+    # port = int(os.getenv('PORT', 5000))
+    # app.run(host='0.0.0.0', port=port, debug=False)
+    
+    # Pour développement local uniquement :
+    if os.getenv('FLASK_ENV') == 'development':
+        port = int(os.getenv('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=True)
 
